@@ -526,11 +526,28 @@ p{margin:0}
 
 /* Em telas estreitas (e nas capturas) o painel da seção "ao vivo" corre junto
    com a página, e as janelas passam a cobrir a tela inteira. */
-html.flow .dash-host.flowable,html.flow #host-demo{height:auto}
-html.flow .flowable > .dash-frame{position:relative;inset:auto;overflow:visible}
-html.flow .flowable .d-scroll{position:relative;inset:auto;overflow:visible}
-html.flow .flowable > .d-layer{position:fixed;z-index:200}
-html.flow.d-lock,html.flow.d-lock body{overflow:hidden}
+/* Capturas de tela: o painel corre junto com a página. */
+body.shot .dash-host.flowable{height:auto}
+body.shot .flowable > .dash-frame{position:relative;inset:auto;overflow:visible}
+body.shot .flowable .d-scroll{position:relative;inset:auto;overflow:visible}
+body.shot .flowable > .d-layer{position:fixed;z-index:200}
+
+/* Telas de toque: o painel aparece como prévia e abre em tela cheia ao tocar,
+   para o dedo nunca disputar a rolagem do painel com a da página. */
+.demo-gate,.demo-close{display:none}
+html.flow #host-demo{height:540px}
+html.flow #host-demo:not(.full) .dash-frame{pointer-events:none}
+html.flow #host-demo:not(.full) .d-scroll{overflow:hidden}
+html.flow #host-demo:not(.full) .demo-gate{display:grid;position:absolute;inset:0;z-index:40;place-items:center;padding:24px;background:rgba(10,20,42,.5);backdrop-filter:blur(2.5px);-webkit-backdrop-filter:blur(2.5px)}
+.demo-gate button{display:grid;justify-items:center;gap:6px;max-width:290px;padding:22px 26px;border:0;border-radius:20px;background:#fff;color:var(--ink);font:inherit;text-align:center;cursor:pointer;box-shadow:0 24px 60px -16px rgba(0,0,0,.5)}
+.demo-gate strong{font:650 21px/1.2 var(--display)}
+.demo-gate span{font-size:14px;color:var(--muted)}
+.demo-gate i{display:inline-flex;align-items:center;justify-content:center;margin-top:8px;min-height:44px;padding:0 20px;border-radius:999px;background:var(--mint);color:var(--mint-ink);font-style:normal;font-weight:700;font-size:15px}
+#host-demo.full,html.flow #host-demo.full{position:fixed;inset:0;z-index:300;height:100%;height:100dvh;background:#f4f6fa}
+#host-demo.full .d-scroll{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+#host-demo.full .d-main{padding-bottom:96px}
+#host-demo.full .demo-close{display:inline-flex;align-items:center;gap:8px;position:absolute;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:25;min-height:46px;padding:0 20px;border:0;border-radius:999px;background:#10204a;color:#fff;font:600 15px/1 var(--body);white-space:nowrap;box-shadow:0 12px 30px -8px rgba(0,0,0,.45);cursor:pointer}
+html.d-full,html.d-full body{overflow:hidden}
 html.flow .phone .dash-host{pointer-events:none}
 html.flow .phone .d-scroll{overflow:hidden}
 html.flow .phone-screen{height:600px}
@@ -602,7 +619,7 @@ body.shot > :not(.dash-host):not(.sprite){display:none!important}
           <div class="phone-screen">
             <div class="phone-status"><span>9:46</span><span class="notch"></span><span class="sig">4G <span class="bat"></span></span></div>
             <div class="dash-host" id="host-phone" aria-label="Painel na versão de celular, com dados fictícios"></div>
-            <div class="phone-cta"><a href="#painel">Abrir o painel completo <span aria-hidden="true">↓</span></a></div>
+            <div class="phone-cta"><a href="#painel" data-open-demo>Testar o painel em tela cheia</a></div>
           </div>
         </div>
         <p class="device-note">Versão de celular real, com dados fictícios. Role e toque dentro da tela.</p>
@@ -1300,7 +1317,34 @@ if (SHOT) {
   window.__dash = createDashboard(h, 'shot');
 } else {
   createDashboard(document.getElementById('host-phone'), 'ph');
-  createDashboard(document.getElementById('host-demo'), 'dk');
+  const demo = document.getElementById('host-demo');
+  createDashboard(demo, 'dk');
+
+  // Em tela de toque, o painel abre em tela cheia a partir da prévia.
+  demo.insertAdjacentHTML('beforeend',
+    '<div class="demo-gate"><button type="button" data-open-demo><strong>Quer testar o painel?</strong><span>Ele abre em tela cheia, com filtros, vendedores e gráficos funcionando.</span><i>Toque para abrir</i></button></div>' +
+    '<button type="button" class="demo-close" data-close-demo>✕ Voltar ao portfólio</button>');
+  let returnY = 0;
+  const openDemo = () => {
+    if (demo.classList.contains('full')) return;
+    returnY = window.scrollY;
+    demo.classList.add('full');
+    document.documentElement.classList.add('d-full');
+    demo.querySelector('.d-scroll').scrollTop = 0;
+    try { history.pushState({ demo: 1 }, ''); } catch (e) { /* sem histórico: o botão de fechar resolve */ }
+  };
+  const closeDemo = () => {
+    if (!demo.classList.contains('full')) return;
+    demo.querySelectorAll('.d-overlay').forEach(o => o.remove());
+    demo.classList.remove('full');
+    document.documentElement.classList.remove('d-full');
+    window.scrollTo(0, returnY);
+  };
+  document.addEventListener('click', e => {
+    if (e.target.closest('[data-open-demo]')) { e.preventDefault(); openDemo(); }
+    else if (e.target.closest('[data-close-demo]')) { if (history.state && history.state.demo) history.back(); else closeDemo(); }
+  });
+  window.addEventListener('popstate', closeDemo);
 }
 
 const copyBtn = document.getElementById('copy-handle');
