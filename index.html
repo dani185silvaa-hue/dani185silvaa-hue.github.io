@@ -526,7 +526,7 @@ p{margin:0}
 
 /* Em telas estreitas (e nas capturas) o painel da seção "ao vivo" corre junto
    com a página, e as janelas passam a cobrir a tela inteira. */
-html.flow .dash-host.flowable{height:auto}
+html.flow .dash-host.flowable,html.flow #host-demo{height:auto}
 html.flow .flowable > .dash-frame{position:relative;inset:auto;overflow:visible}
 html.flow .flowable .d-scroll{position:relative;inset:auto;overflow:visible}
 html.flow .flowable > .d-layer{position:fixed;z-index:200}
@@ -1237,16 +1237,7 @@ function createDashboard(host, p) {
     days.forEach((x, i) => {
       const cx = padL + band * (i + 0.5);
       const hc = x.c ? Math.max(1.5, H - padB - y(x.c)) : 0, hp = x.p ? Math.max(1.5, H - padB - y(x.p)) : 0;
-      g += `<g><meta property="og:type" content="website">
-<meta property="og:title" content="Daniel Silva · Painel de KPIs de vendas">
-<meta property="og:description" content="Da base crua do banco de dados ao celular do gerente. Case com demonstração interativa e dados fictícios.">
-<meta property="og:url" content="https://dani185silvaa-hue.github.io/">
-<meta property="og:image" content="https://dani185silvaa-hue.github.io/assets/capa.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="627">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23133476'/%3E%3Ctext x='16' y='21' font-family='Arial' font-weight='700' font-size='13' fill='%23ffc566' text-anchor='middle'%3EDS%3C/text%3E%3C/svg%3E">
-<title>Dia ${x.d}: ${brl(x.c)} · mesmo dia do ano anterior: ${brl(x.p)}</title>`;
+      g += `<g><title>Dia ${x.d}: ${brl(x.c)} · mesmo dia do ano anterior: ${brl(x.p)}</title>`;
       g += `<rect x="${(cx - bw - 1).toFixed(1)}" y="${(H - padB - hc).toFixed(1)}" width="${bw.toFixed(1)}" height="${hc.toFixed(1)}" rx="2" fill="#2c53a1"/>`;
       g += `<rect x="${(cx + 1).toFixed(1)}" y="${(H - padB - hp).toFixed(1)}" width="${bw.toFixed(1)}" height="${hp.toFixed(1)}" rx="2" fill="#cfd3dc"/></g>`;
       if (i % every === 0) g += `<text x="${cx.toFixed(1)}" y="${H - 7}" text-anchor="middle" fill="#7d838f" font-size="10">${x.d}</text>`;
@@ -1296,7 +1287,7 @@ function syncLock() { document.documentElement.classList.toggle('d-lock', !!docu
 
 /* ---------- Montagem ---------- */
 const SHOT = /[?&]shot=1/.test(location.search);
-const mq = window.matchMedia('(max-width: 700px)');
+const mq = window.matchMedia('(max-width: 700px), (pointer: coarse)');
 const setFlow = () => document.documentElement.classList.toggle('flow', SHOT || mq.matches);
 setFlow();
 if (mq.addEventListener) mq.addEventListener('change', setFlow);
