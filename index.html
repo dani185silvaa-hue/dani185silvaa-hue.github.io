@@ -1,0 +1,1326 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Daniel Silva · Painel de KPIs de vendas">
+<meta property="og:description" content="Da base crua do banco de dados ao celular do gerente. Case com demonstração interativa e dados fictícios.">
+<meta property="og:url" content="https://dani185silvaa-hue.github.io/">
+<meta property="og:image" content="https://dani185silvaa-hue.github.io/assets/capa.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23133476'/%3E%3Ctext x='16' y='21' font-family='Arial' font-weight='700' font-size='13' fill='%23ffc566' text-anchor='middle'%3EDS%3C/text%3E%3C/svg%3E">
+<title>Portfólio Daniel Silva</title>
+<meta name="description" content="Case de dados de vendas: um painel de KPIs que leva a base crua do banco de dados até o celular dos gerentes distritais.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Página de uma só aparência (clara), no mesmo mundo visual do painel. */
+:root{
+  color-scheme:light;
+  --ink:#141e31; --ink-soft:#2b364b; --muted:#555d6c; --faint:#828895;
+  --paper:#f2f3f6; --card:#ffffff; --line:#dbdfe6; --line-soft:#e8eaef;
+  --g900:#0a152c; --g800:#0d1d3c; --g700:#0f2655; --g600:#113378; --g500:#1c4495;
+  --mint:#ffc566; --mint-ink:#231a06;
+  --amber-bg:#fff1e5; --amber:#a65e36;
+  --display:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;
+  --body:'Figtree','Segoe UI',system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+  --nav-h:60px;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 12px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+h1,h2,h3,h4{margin:0;font-family:var(--display);text-wrap:balance}
+p{margin:0}
+.sprite{position:absolute;width:0;height:0;overflow:hidden}
+.wrap{width:100%;max-width:1180px;margin-inline:auto;padding-inline:clamp(16px,4vw,40px)}
+.wrap-wide{max-width:1360px}
+:focus-visible{outline:3px solid #2f5cb5;outline-offset:3px}
+
+/* Navegação */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(9,19,39,.9);backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid rgba(158,183,232,.12);color:#eaeef7}
+.nav-in{display:flex;align-items:center;gap:24px;height:var(--nav-h)}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:600;font-size:15px;white-space:nowrap}
+.mark{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#ffd48a,#f09a2e);color:var(--mint-ink);display:grid;place-items:center;font:700 13px/1 var(--display);letter-spacing:.02em}
+.nav-links{display:flex;gap:24px;margin-left:auto;font-size:14px}
+.nav-links a{text-decoration:none;color:rgba(234,238,247,.74);transition:color .15s}
+.nav-links a:hover{color:#fff}
+.nav-cta{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:#eaeef7;color:var(--g900);font-weight:600;font-size:14px;text-decoration:none;white-space:nowrap}
+.nav-cta:hover{background:#fff}
+@media(max-width:820px){.nav-links{display:none}.nav-cta{margin-left:auto}}
+
+/* Abertura */
+.hero{position:relative;overflow:hidden;color:#eef1f8;background:radial-gradient(circle at 82% -8%,rgba(125,159,226,.24),transparent 42%),linear-gradient(112deg,#0a152c 0%,#0e224b 55%,#113378 100%)}
+.hero::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(213,225,248,.06) 0 1px,transparent 1px 72px);mask-image:linear-gradient(90deg,transparent,#000 30%,#000 70%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 30%,#000 70%,transparent);pointer-events:none}
+.hero-in{position:relative;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:48px;align-items:center;padding-block:64px 72px}
+.eyebrow{font:500 12px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#a9c8ff;margin-bottom:18px}
+.hero h1{font-size:clamp(36px,4.7vw,60px);line-height:1.03;letter-spacing:-.028em;font-weight:650}
+.hero h1 em{font-style:normal;color:var(--mint)}
+.lede{font-size:clamp(16px,1.35vw,18.5px);line-height:1.62;color:rgba(234,238,247,.84);max-width:56ch;margin-top:22px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;transition:background .15s,border-color .15s,transform .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn-mint{background:var(--mint);color:var(--mint-ink)}
+.btn-mint:hover{background:#ffd899}
+.btn-line{border:1px solid rgba(234,238,247,.3);color:#eef1f8}
+.btn-line:hover{border-color:rgba(234,238,247,.6)}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:44px 0 0;border-top:1px solid rgba(234,238,247,.16)}
+.facts div{padding:18px 14px 0 0}
+.facts dt{font:650 30px/1 var(--display);color:#fff;font-variant-numeric:tabular-nums}
+.facts dd{margin:8px 0 0;font-size:13px;line-height:1.45;color:rgba(234,238,247,.7)}
+
+.device{position:relative;display:flex;flex-direction:column;align-items:center}
+.phone{position:relative;width:min(384px,100%);border-radius:46px;padding:11px;background:#060f21;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),0 0 0 7px rgba(255,255,255,.05),0 40px 90px -20px rgba(0,0,0,.55)}
+.phone-screen{position:relative;height:700px;border-radius:36px;overflow:hidden;background:#f5f7f8;display:flex;flex-direction:column}
+.phone-status{flex:none;display:flex;align-items:center;justify-content:space-between;height:34px;padding:0 26px;background:#0b1831;color:#e8edf6;font:600 12.5px/1 var(--body)}
+.phone-status .notch{width:96px;height:24px;border-radius:14px;background:#060f21}
+.phone-status .sig{display:flex;align-items:center;gap:5px;font-size:11px}
+.phone-status .bat{width:22px;height:11px;border:1.5px solid #e8edf6;border-radius:3px;position:relative}
+.phone-status .bat::after{content:"";position:absolute;inset:1.5px;right:5px;background:#e8edf6;border-radius:1px}
+.phone .dash-host{flex:1;min-height:0}
+.phone-cta{display:none}
+.device-note{margin-top:18px;font-size:13px;color:rgba(234,238,247,.7);text-align:center}
+
+.wa{position:absolute;z-index:3;top:118px;left:max(-44px,calc(50% - 292px));width:250px;padding:8px 8px 6px;border-radius:12px 12px 12px 4px;background:#e2f7e6;color:#1d222b;box-shadow:0 18px 40px -12px rgba(0,0,0,.45);transform:rotate(-2.5deg)}
+.wa-file{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;background:rgba(11,24,49,.07)}
+.wa-doc{width:34px;height:40px;flex:none;border-radius:5px;background:#e8603c;color:#fff;display:grid;place-items:end center;padding-bottom:5px;font:700 8.5px/1 var(--body);letter-spacing:.04em;position:relative}
+.wa-doc::before{content:"";position:absolute;top:0;right:0;width:10px;height:10px;background:linear-gradient(225deg,#e2f7e6 50%,#c24a2a 50%);border-radius:0 5px 0 0}
+.wa-file strong{display:block;font-size:13px;line-height:1.3}
+.wa-file small{display:block;font-size:11px;color:#5d636f}
+.wa-text{padding:7px 4px 0;font-size:13px;line-height:1.4}
+.wa-time{display:block;text-align:right;font-size:10.5px;color:#6b717c;padding:0 2px}
+.wa-time b{color:#3aa5d8;font-weight:700;letter-spacing:-2px;margin-left:3px}
+
+@media(max-width:980px){
+  .hero-in{grid-template-columns:1fr;gap:56px;padding-block:48px 56px}
+  .wa{position:relative;top:auto;left:auto;transform:rotate(-1.5deg);margin:0 0 -26px -120px}
+}
+@media(max-width:620px){
+  .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .facts div:nth-child(n+3){padding-top:22px}
+  .wa{margin-left:0;width:236px;align-self:flex-start}
+}
+
+/* Seções */
+.section{padding-block:clamp(64px,8vw,104px)}
+.section + .section{padding-top:0}
+.head{max-width:740px;margin-bottom:40px}
+.kicker{font:500 12px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--g600);margin-bottom:14px}
+.head h2{font-size:clamp(30px,3.4vw,44px);line-height:1.08;letter-spacing:-.022em;font-weight:650}
+.head p{color:var(--muted);font-size:17.5px;line-height:1.6;margin-top:16px;max-width:62ch}
+
+.story{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.story article{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px}
+.tag{display:inline-flex;align-items:center;font:600 12px/1 var(--body);padding:7px 11px;border-radius:999px}
+.tag-bad{background:var(--amber-bg);color:var(--amber)}
+.tag-good{background:#e3e9f4;color:#12306d}
+.tag-blue{background:#efe9fb;color:#6a4fb3}
+.story h3{font-size:22px;line-height:1.2;margin:18px 0 10px;letter-spacing:-.012em}
+.story p{color:var(--muted);font-size:15.5px}
+
+.pipeline{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:20px;background:var(--card)}
+.step{position:relative;padding:28px 24px 30px}
+.step + .step{border-left:1px solid var(--line)}
+.step + .step::before{content:"";position:absolute;left:-7px;top:34px;width:12px;height:12px;background:var(--card);border-top:1px solid var(--line);border-right:1px solid var(--line);transform:rotate(45deg)}
+.step-n{font:500 12px/1 var(--mono);color:var(--g600);letter-spacing:.08em}
+.step h3{font-size:21px;margin:12px 0 8px;letter-spacing:-.01em}
+.tool{display:inline-block;font:500 11.5px/1.4 var(--mono);color:#4c5567;background:#eef0f4;border-radius:6px;padding:3px 8px}
+.step p{font-size:14.5px;line-height:1.6;color:var(--muted);margin-top:14px}
+
+.tech{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:20px;margin-top:20px}
+.code{background:var(--g900);color:#d5def0;border-radius:20px;padding:24px 24px 26px;min-width:0}
+.code-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;font:500 12px/1.4 var(--mono);color:#8e9ebd}
+.code-top b{font-weight:500;color:#e8edf6}
+.code pre{margin:0;overflow-x:auto;font:13px/1.75 var(--mono);white-space:pre}
+.code .c{color:#6e81a6}.code .k{color:#ffc566}.code .s{color:#f3d49b}.code .f{color:#a9c9ff}
+.code-note{margin-top:16px;font-size:14px;line-height:1.55;color:#a8b5d0}
+.kpis{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px}
+.kpis h3{font-size:19px}
+.kpis > p{font-size:14.5px;color:var(--muted);margin-top:6px}
+.kpis ul{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:16px 0 0}
+.kpis li{font-size:13.5px;line-height:1.3;padding:7px 11px;border-radius:9px;background:#f1f3f6;color:#23304b;border:1px solid #e1e4eb}
+
+/* Painel ao vivo */
+.try{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin:-16px 0 20px;font-size:14px;color:var(--muted)}
+.try b{font-weight:600;color:var(--ink-soft);margin-right:2px}
+.try span{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:999px;background:var(--card);border:1px solid var(--line);color:var(--ink-soft);font-size:13.5px}
+.try span::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--g500)}
+.browser{border-radius:16px;overflow:hidden;background:#fff;border:1px solid #cfd3dc;box-shadow:0 40px 90px -40px rgba(10,21,44,.45),0 10px 26px -14px rgba(10,21,44,.2)}
+.browser-bar{display:flex;align-items:center;gap:14px;height:42px;padding:0 14px;background:#eaecf0;border-bottom:1px solid #d8dce3}
+.dots{display:flex;gap:6px;flex:none}
+.dots i{width:11px;height:11px;border-radius:50%;background:#cbcfd7}
+.url{flex:1;min-width:0;max-width:520px;margin-inline:auto;height:26px;border-radius:7px;background:#fff;border:1px solid #d9dce3;display:flex;align-items:center;justify-content:center;gap:8px;padding:0 10px;font:12px/1 var(--mono);color:#5a6272;white-space:nowrap;overflow:hidden}
+.url span{overflow:hidden;text-overflow:ellipsis}
+.url svg{width:13px;height:13px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8}
+.bar-gap{width:47px;flex:none}
+#host-demo{height:min(880px,86vh)}
+.fine{margin-top:14px;font-size:13px;color:var(--faint)}
+
+/* Decisões de design */
+.decisions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.decision{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px}
+.decision .ico{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;background:#e5eaf3;color:#1a3b7c}
+.decision .ico svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.decision h3{font-size:18.5px;line-height:1.25;margin:16px 0 8px}
+.decision p{font-size:14.5px;line-height:1.6;color:var(--muted)}
+
+/* Sobre */
+.about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:start}
+.about-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:30px}
+.about-card h2{font-size:clamp(28px,3vw,38px);line-height:1.1;letter-spacing:-.02em}
+.about-card > p{color:var(--muted);font-size:16px;line-height:1.65;margin-top:16px}
+.label{font:500 11.5px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin:26px 0 10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips span{font-size:14px;padding:7px 12px;border-radius:9px;background:#eef0f5;border:1px solid #dfe3ea;color:#1e2d4b;font-weight:500}
+.edu{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 16px;border-radius:12px;background:#f4f5f8;border:1px solid var(--line-soft)}
+.edu strong{font-size:15px}
+.edu span{font-size:13.5px;color:var(--muted)}
+.timeline{list-style:none;margin:0;padding:0}
+.timeline li{position:relative;padding:0 0 26px 30px}
+.timeline li:last-child{padding-bottom:0}
+.timeline li::before{content:"";position:absolute;left:6px;top:10px;bottom:-8px;width:2px;background:var(--line)}
+.timeline li:last-child::before{display:none}
+.timeline li::after{content:"";position:absolute;left:0;top:4px;width:14px;height:14px;border-radius:50%;background:#fff;border:3px solid #9babca}
+.timeline li:first-child::after{border-color:var(--g500);background:var(--mint)}
+.timeline small{display:block;font:500 12px/1.4 var(--mono);color:var(--faint);letter-spacing:.04em}
+.timeline strong{display:block;font:600 18px/1.3 var(--display);margin-top:4px}
+.timeline p{font-size:14.5px;color:var(--muted);margin-top:6px}
+.company{font-size:14px;color:var(--muted);margin:-4px 0 22px}
+
+/* Contato */
+.contact{border-radius:24px;padding:clamp(28px,5vw,52px);color:#eef1f8;background:radial-gradient(circle at 90% 0%,rgba(125,159,226,.22),transparent 45%),linear-gradient(112deg,#0a152c,#0f2655 60%,#113378);display:grid;grid-template-columns:minmax(0,1.3fr) auto;gap:28px;align-items:center}
+.contact h2{font-size:clamp(28px,3.4vw,42px);line-height:1.08;letter-spacing:-.02em}
+.contact p{color:rgba(234,238,247,.8);margin-top:12px;max-width:52ch}
+.contact-side{display:grid;gap:12px;justify-items:start}
+.handle{display:flex;align-items:center;gap:8px;font:13px/1.4 var(--mono);color:#b7c6e4;user-select:all}
+.copy{border:1px solid rgba(234,238,247,.3);background:none;color:#eef1f8;border-radius:8px;min-height:32px;padding:0 10px;font:600 12px/1 var(--body);cursor:pointer}
+.copy:hover{border-color:rgba(234,238,247,.6)}
+.site-foot{padding-block:28px 40px;font-size:13px;color:var(--faint);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+@media(max-width:900px){
+  .story,.decisions,.tech,.about{grid-template-columns:1fr}
+  .pipeline{grid-template-columns:1fr}
+  .step + .step{border-left:0;border-top:1px solid var(--line)}
+  .step + .step::before{left:34px;top:-7px;transform:rotate(135deg)}
+  .contact{grid-template-columns:1fr}
+}
+@media(min-width:901px) and (max-width:1100px){.decisions{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* ================= Painel (réplica com dados fictícios) ================= */
+.dash-host{position:relative}
+.dash-frame{position:absolute;inset:0;overflow:hidden;container:dash/inline-size;background:#f5f7f8;color:#212a3c;font:14px/1.45 'Segoe UI',system-ui,-apple-system,Roboto,'Helvetica Neue',sans-serif;text-align:left}
+.d-layer{position:absolute;inset:0;z-index:30;pointer-events:none;container:dash/inline-size;font:14px/1.45 'Segoe UI',system-ui,-apple-system,Roboto,'Helvetica Neue',sans-serif;color:#212a3c}
+.d-layer > *{pointer-events:auto}
+.d-scroll{position:absolute;inset:0;overflow:auto;scrollbar-width:thin;scrollbar-color:#c5cad3 transparent}
+.dash-frame *,.d-layer *{box-sizing:border-box}
+:where(.dash-frame,.d-layer) svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+:where(.dash-frame,.d-layer) :where(button,input,select){font:inherit;color:inherit}
+:where(.dash-frame,.d-layer) button{cursor:pointer}
+.dash-frame h1,.dash-frame h2,.dash-frame h3,.dash-frame h4,.d-layer h2,.d-layer h3,.d-layer h4,.d-layer h5{font-family:inherit;text-wrap:wrap}
+
+.d-top{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:92px;padding:16px 28px;margin-bottom:18px;color:#fff;background:radial-gradient(circle at 78% -30%,rgba(107,145,222,.24),transparent 36%),linear-gradient(112deg,#0b1831 0%,#0f2655 55%,#113378 100%);border-bottom:1px solid rgba(157,182,231,.22);box-shadow:0 10px 28px rgba(12,29,63,.14)}
+.d-brand{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;min-width:0}
+.d-top h1{margin:0;font-size:24px;font-weight:650;letter-spacing:-.55px;line-height:1.2;color:#fff}
+.d-demo{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:#f6dcad;color:#5b3b0e;padding:4px 8px;border-radius:6px;white-space:nowrap}
+.d-snap{display:flex;align-items:center;gap:9px;padding:8px 11px;font-size:12px;color:rgba(241,245,253,.86);background:rgba(4,16,41,.18);border:1px solid rgba(213,225,248,.13);border-radius:9px;white-space:nowrap}
+.d-snap small{display:block;font-size:11px;color:rgba(213,222,241,.62)}
+.d-dot{width:7px;height:7px;border-radius:50%;background:#79ddbd;box-shadow:0 0 0 4px rgba(121,221,189,.1);flex:none}
+.d-main{padding:0 24px 22px;max-width:1720px;margin:0 auto}
+
+.d-filters{position:sticky;top:10px;z-index:6;display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:10px;align-items:end;padding:10px 12px;margin-bottom:22px;background:#fff;border:1px solid #e4e6eb;border-radius:10px;box-shadow:0 8px 24px rgba(32,44,67,.06)}
+.d-field{position:relative;display:grid;gap:4px;min-width:0}
+.d-label{font-size:11px;font-weight:650;color:#707888;padding-left:2px}
+.d-control{display:flex;align-items:center;gap:9px;width:100%;min-height:42px;padding:0 12px;border-radius:8px;border:1px solid #e3e6eb;background:#f5f6f8;color:#283247;font-size:13px;text-align:left;white-space:nowrap}
+.d-control > span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.d-control svg{width:16px;height:16px;color:#8991a2;flex:none}
+.d-select{background:#fff;border-color:#dcdfe6}
+.d-select[aria-expanded="true"]{border-color:#375da8;box-shadow:0 0 0 3px rgba(55,93,168,.16)}
+.d-select .chev{color:#2c364b;transition:transform .15s}
+.d-select[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.d-menu{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:10;display:grid;gap:2px;padding:6px;max-height:300px;overflow:auto;background:#fff;border:1px solid #dcdfe6;border-radius:10px;box-shadow:0 18px 40px rgba(19,30,51,.16)}
+.d-opt{display:flex;align-items:center;gap:10px;width:100%;min-height:36px;padding:6px 10px;border:0;border-radius:7px;background:none;font-size:13.5px;color:#2b364b;text-align:left}
+.d-opt:hover{background:#f2f4f7}
+.d-box{width:17px;height:17px;flex:none;display:grid;place-items:center;border-radius:5px;border:1.5px solid #c3c8d1;background:#fff}
+.d-opt[aria-checked="true"] .d-box{background:#15377b;border-color:#15377b}
+.d-opt[aria-checked="true"] .d-box::after{content:"";width:8px;height:4px;border:2px solid #fff;border-top:0;border-right:0;transform:translateY(-1px) rotate(-45deg)}
+.d-opt.all .d-box{border-radius:50%}
+.d-opt.all[aria-checked="true"]{background:#e2e7f2;font-weight:700;color:#1c2840}
+.d-reset{display:flex;align-items:center;justify-content:center;gap:7px;min-height:42px;padding:0 12px;border:0;border-left:1px solid #e4e6eb;background:none;color:#697181;font-size:12px}
+.d-reset svg{width:15px;height:15px}
+.d-reset:hover{color:#1d3360}
+
+.d-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 0 12px}
+.d-title h2{margin:0;font-size:17px;font-weight:650;letter-spacing:-.25px;color:#212a3c}
+.d-title span{font-size:12px;color:#707681}
+
+.d-revenue{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:16px}
+.d-metric{display:grid;grid-template-columns:minmax(0,1fr) minmax(210px,.95fr);grid-template-areas:"top top" "value target" "cmp cmp";column-gap:20px;row-gap:6px;align-items:center;min-height:182px;padding:20px 22px;border:1px solid #e4e6eb;border-radius:13px;background:#fff;box-shadow:0 3px 10px rgba(25,39,67,.02)}
+.d-metric.primary{background:linear-gradient(110deg,#0c2964,#113681);border-color:transparent;color:#fff;box-shadow:0 6px 18px rgba(16,47,108,.13)}
+.d-metric-top{grid-area:top;align-self:start;display:flex;justify-content:space-between;align-items:center;font-size:14px;color:#6d7482}
+.d-metric.primary .d-metric-top{color:#c0cde7}
+.d-metric-top svg{width:19px;height:19px;color:#909aaf}
+.d-metric.primary .d-metric-top svg{color:#7e97c9}
+.d-value{grid-area:value;font-size:clamp(25px,3cqi,38px);font-weight:650;letter-spacing:-1px;line-height:1.15;font-variant-numeric:tabular-nums;white-space:nowrap}
+.d-target{grid-area:target;padding:10px 11px;border:1px solid #e2e5eb;border-radius:9px;background:#f5f6f8}
+.d-metric.primary .d-target{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.17)}
+.d-tgrid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(76px,.7fr)}
+.d-tgrid > div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.d-tgrid > div + div{margin-left:10px;padding-left:10px;border-left:1px solid #dce0e8}
+.d-metric.primary .d-tgrid > div + div{border-color:rgba(255,255,255,.17)}
+.d-tgrid span{font-size:10px;color:#707888}
+.d-metric.primary .d-tgrid span{color:#c7d1e6}
+.d-tgrid strong{font-size:13px;font-weight:650;line-height:1.25;color:#35435e;white-space:nowrap;font-variant-numeric:tabular-nums}
+.d-metric.primary .d-tgrid strong{color:#fff}
+.d-tgrid .att strong{font-size:15px;color:#253c6b}
+.d-metric.primary .d-tgrid .att strong{color:#e6ebf6}
+.d-tfoot{display:flex;align-items:center;gap:7px;margin-top:8px;padding-top:7px;border-top:1px dashed #dfe2e9}
+.d-metric.primary .d-tfoot{border-color:rgba(255,255,255,.18)}
+.d-tchip{flex:none;font-size:9.5px;padding:3px 6px;border-radius:5px;background:#fff1e5;color:#a65e36;white-space:nowrap}
+.d-tchip.good{background:#e7f5ee;color:#167358}
+.d-metric.primary .d-tchip{background:rgba(255,255,255,.12);color:#f0e6c4}
+.d-metric.primary .d-tchip.good{background:rgba(223,244,231,.25);color:#edffe9}
+.d-tfoot p{margin:0;min-width:0;font-size:10px;line-height:1.35;color:#626d82}
+.d-metric.primary .d-tfoot p{color:#ced8ec}
+.d-cmp{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.d-metric .d-cmp{grid-area:cmp;align-self:end}
+.d-caption{font-size:12px;color:#9398a3;white-space:nowrap}
+.d-metric.primary .d-caption{color:#a8b6d3}
+.d-delta{font-size:12px;font-weight:600;color:#707681;white-space:nowrap}
+.d-delta.good{color:#18775d}
+.d-delta.bad{color:#bd614b}
+.d-metric.primary .d-delta.good{color:#d7e8b2}
+.d-metric.primary .d-delta.bad{color:#ffd9ad}
+
+.d-card{border:1px solid #e4e6eb;border-radius:13px;background:#fff;padding:16px 20px;box-shadow:0 3px 10px rgba(25,39,67,.02);margin-bottom:16px}
+.d-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.d-head h3{margin:0;font-size:14px;font-weight:650;letter-spacing:-.15px;color:#212a3c}
+.d-head p{margin:2px 0 0;font-size:11px;color:#707681}
+.d-head > svg{width:19px;height:19px;color:#909aaf;flex:none}
+.d-pairs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px}
+.d-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:1px solid #d9dde6;border-radius:10px;overflow:hidden;background:#fff}
+.d-pair h4{grid-column:1/-1;margin:0;padding:9px 11px;border-bottom:1px solid #dce0e8;background:#f2f4f7;color:#233760;font-size:12px;font-weight:700}
+.d-pair h4 em{display:block;margin-top:2px;font-style:normal;font-size:10px;font-weight:500;color:#7d8595}
+.d-reading{min-width:0;padding:10px 11px}
+.d-reading + .d-reading{border-left:1px solid #bdc3cf;background:#f8f9fa}
+.d-reading > span{display:block;font-size:10px;font-weight:750;letter-spacing:.02em;text-transform:uppercase;color:#243f74}
+.d-reading.sem > span{color:#606a7e}
+.d-reading > strong{display:block;margin:3px 0 5px;font-size:clamp(20px,2.2cqi,28px);font-weight:650;letter-spacing:-.8px;line-height:1.2;white-space:nowrap;font-variant-numeric:tabular-nums}
+.d-reading .d-cmp{flex-direction:column;align-items:flex-start;gap:1px}
+.d-reading .d-caption,.d-reading .d-delta{font-size:10px}
+
+.d-team{border-color:#b6c3dd;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.d-team:hover{border-color:#6d89c1;box-shadow:0 8px 22px rgba(18,43,92,.08)}
+.d-pill{display:inline-flex;align-items:center;gap:6px;margin-top:6px;min-height:28px;padding:0 12px;border:0;border-radius:999px;background:#d8e0f0;color:#233760;font-size:11px;font-weight:700}
+.d-pill:hover{background:#c6d2e9}
+.d-team-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:14px}
+.d-tr{min-width:0;border:1px solid #d9dde6;border-radius:10px;overflow:hidden;background:#fff}
+.d-tr-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 7px;padding:9px 11px;background:#f2f4f7;border-bottom:1px solid #dce0e8}
+.d-tr-head b{font-size:11px;font-weight:700;color:#233760}
+.d-tr-head em{font-style:normal;font-size:9px;color:#7d8595}
+.d-tr > strong{display:block;padding:11px 11px 5px;font-size:clamp(19px,1.9cqi,25px);font-weight:650;letter-spacing:-.7px;line-height:1.2;font-variant-numeric:tabular-nums;white-space:nowrap}
+.d-tr .d-cmp{padding:0 11px 11px}
+
+.d-cat-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 26px;margin-top:14px}
+.d-cat{min-width:0;padding-bottom:10px;border-bottom:1px solid #eef0f3}
+.d-cat-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:6px}
+.d-cat-name{font-size:12px;font-weight:650;color:#303d56;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.d-cat-head .d-delta{font-size:11px}
+.d-cat-line{display:grid;grid-template-columns:34px minmax(12px,1fr) auto 42px;align-items:center;gap:8px;padding:2px 0;font-size:11px;color:#878d99}
+.d-bar{display:block;height:6px;background:#f0f1f4;border-radius:4px;overflow:hidden}
+.d-bar i{display:block;height:100%;background:#4061a2;border-radius:4px}
+.d-cat-line.aa .d-bar i{background:#cfd3db}
+.d-cat-line b{font-weight:600;color:#4b576e;white-space:nowrap;font-variant-numeric:tabular-nums}
+.d-cat-line em{font-style:normal;font-size:10px;color:#9a9fa9;text-align:right}
+
+.d-lower{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.d-panel{display:flex;flex-direction:column;min-width:0;padding:18px;border:1px solid #e4e6eb;border-radius:13px;background:#fff}
+.d-phead{display:flex;align-items:center;gap:10px}
+.d-phead h3{margin:0;font-size:15px;font-weight:650;color:#212a3c}
+.d-phead p{margin:1px 0 0;font-size:10px;color:#89909e}
+.d-tile{width:32px;height:32px;flex:none;display:grid;place-items:center;border-radius:8px}
+.d-tile svg{width:16px;height:16px}
+.d-tile.amber{background:#faf1e3;color:#bc9860}
+.d-tile.teal{background:#e4f3f6;color:#2f8aa0}
+.d-tile.blue{background:#e8f0fa;color:#618eba}
+.d-period{margin:14px 0 10px;font-size:12px;color:#989da7}
+.d-leader{margin:0 0 8px;font-size:22px;font-weight:650;letter-spacing:-.5px;color:#404f6d}
+.d-mix{display:grid;gap:9px}
+.d-mix-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:baseline;gap:4px 8px;font-size:12px;color:#7c8391}
+.d-mix-row > span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.d-mix-row b{font-weight:600;color:#4b576e;font-variant-numeric:tabular-nums}
+.d-mix-row .d-delta{font-size:10px}
+.d-mix-row .d-bar{grid-column:1/-1;height:4px}
+.d-mix-row:nth-child(1) .d-bar i{background:#3f6fd1}
+.d-mix-row:nth-child(2) .d-bar i{background:#56b0c0}
+.d-mix-row:nth-child(3) .d-bar i{background:#d6a257}
+.d-mix-row:nth-child(4) .d-bar i{background:#9a88cf}
+.d-mix-row:nth-child(5) .d-bar i{background:#d98c7a}
+.d-mix-row:nth-child(6) .d-bar i{background:#8db07a}
+.d-big{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px}
+.d-big strong{font-size:30px;font-weight:650;letter-spacing:-1px;line-height:1.15;font-variant-numeric:tabular-nums}
+.d-badge{font-size:10.5px;font-weight:600;padding:3px 7px;border-radius:5px;background:#e8f5ed;color:#18775d}
+.d-badge.bad{background:#fbf0eb;color:#bd614b}
+.d-desc{margin:4px 0 14px;font-size:12px;color:#9499a3}
+.d-comp{display:grid;gap:9px}
+.d-comp-row{display:grid;grid-template-columns:36px minmax(12px,1fr) auto;align-items:center;gap:10px;font-size:12px;color:#868c99}
+.d-comp-row b{min-width:48px;text-align:right;font-weight:550;color:#636d81;font-variant-numeric:tabular-nums}
+.d-comp-row.aa .d-bar i{background:#cfd3db}
+.d-foot{margin:18px 0 0;font-size:11px;color:#9ba1ac}
+
+/* Janelas do painel */
+.d-overlay{position:absolute;inset:0;display:grid;place-items:center;padding:16px;background:rgba(14,22,39,.46);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);animation:d-fade .16s ease}
+@keyframes d-fade{from{opacity:0}}
+@keyframes d-rise{from{transform:translateY(10px);opacity:.5}}
+.d-modal{position:relative;display:flex;flex-direction:column;width:100%;max-height:100%;overflow:hidden;background:#fff;border-radius:16px;box-shadow:0 30px 70px rgba(9,18,36,.32);animation:d-rise .2s ease}
+.d-close{width:36px;height:36px;flex:none;display:grid;place-items:center;border:1px solid #dcdfe6;border-radius:9px;background:#f6f7f9;color:#4c5567}
+.d-close svg{width:16px;height:16px}
+.d-close:hover{background:#eaedf2}
+
+.d-pm{max-width:430px}
+.d-pm-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid #edeff2}
+.d-pm-head h3{margin:0;font-size:17px;font-weight:700}
+.d-pm-body{display:grid;gap:14px;padding:16px 18px;overflow:auto}
+.d-pm-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.d-pm-fields label{display:grid;gap:6px;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#5e6675}
+.d-pm-fields input{width:100%;min-width:0;min-height:42px;padding:0 10px;border:1px solid #dcdfe6;border-radius:9px;background:#f6f7f9;font-size:14px;letter-spacing:0;text-transform:none;font-weight:400;color:#212a3c}
+.d-pm-fields input:focus{outline:none;border-color:#375da8;box-shadow:0 0 0 3px rgba(55,93,168,.18);background:#fff}
+.d-quick{display:flex;flex-wrap:wrap;gap:8px}
+.d-quick button{min-height:34px;padding:0 13px;border:1px solid #dcdfe6;border-radius:999px;background:#f5f6f8;font-size:12.5px;font-weight:600;color:#343f56}
+.d-quick button.on{background:#e2e7f2;border-color:#9eb0d4;color:#132d61}
+.d-note{margin:0;padding:10px 12px;border-radius:9px;background:#fff4ea;color:#8b5a33;font-size:12px;line-height:1.5}
+.d-pm-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-top:1px solid #edeff2}
+.d-pm-foot span{font-size:12px;color:#6a7281}
+.d-apply{min-height:40px;padding:0 20px;border:0;border-radius:10px;background:#132d61;color:#fff;font-size:14px;font-weight:700}
+.d-apply:hover{background:#0f2551}
+
+.d-sellers{max-width:1080px;height:100%}
+.d-ss-head{display:grid;gap:12px;padding:16px 18px 12px;border-bottom:1px solid #edeff2}
+.d-ss-top{display:flex;align-items:flex-start;gap:14px}
+.d-ss-id{min-width:0}
+.d-ss-id h2{margin:0;font-size:17px;font-weight:700}
+.d-ss-id p{margin:2px 0 0;font-size:12px;color:#707888}
+.d-ss-period{margin:0 0 0 auto;align-self:center;font-size:12px;font-weight:700;color:#15377c;white-space:nowrap}
+.d-ss-tools{display:flex;gap:10px}
+.d-ss-tools input{flex:1;min-width:0;min-height:40px;padding:0 12px;border:1.5px solid #dcdfe6;border-radius:9px;background:#f6f7f9;font-size:13px}
+.d-ss-tools input:focus{outline:none;border-color:#375da8;background:#fff;box-shadow:0 0 0 3px rgba(55,93,168,.15)}
+.d-ss-tools select{min-height:40px;max-width:220px;padding:0 10px;border:1px solid #dcdfe6;border-radius:9px;background:#fff;font-size:13px}
+.d-ss-list{flex:1;display:grid;grid-auto-rows:max-content;align-content:start;gap:10px;padding:12px 14px;overflow:auto;background:#f6f7f8}
+.d-srow{display:grid;grid-template-columns:minmax(0,1.5fr) repeat(4,minmax(0,.78fr));gap:14px;padding:14px 16px;border:1px solid #dadee5;border-radius:11px;background:#fff}
+.d-sid h4{margin:0 0 8px;font-size:13px;font-weight:800;letter-spacing:.01em;color:#172134}
+.d-chips{display:flex;flex-wrap:wrap;gap:5px}
+.d-chip{font-size:9.5px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:#edeff2;color:#5a6271}
+.d-chip.br{background:#dce2ef;color:#1d3461}
+.d-more{display:inline-flex;align-items:center;gap:6px;min-height:28px;margin-top:12px;padding:0 12px;border:0;border-radius:999px;background:#dce2ef;color:#1d3461;font-size:10.5px;font-weight:800}
+.d-more:hover{background:#c7d2e8}
+.d-scol{min-width:0}
+.d-sl{display:block;font-size:9.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#6b7280}
+.d-scol > strong{display:block;margin:3px 0;font-size:14px;font-weight:700;color:#1e283b;white-space:nowrap;font-variant-numeric:tabular-nums}
+.d-scol small{display:block;margin:3px 0;font-size:9.5px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:#3c465b}
+.d-vs{display:inline-block;padding:2px 7px;border-radius:999px;background:#e3f5ec;color:#19775c;font-size:9.5px;font-weight:700;text-transform:uppercase;white-space:nowrap}
+.d-vs.bad{background:#fdecea;color:#b4533f}
+.d-vs.none{background:#edeff2;color:#707888}
+.d-ss-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;border-top:1px solid #edeff2;font-size:12px;color:#707888}
+.d-pager{display:flex;align-items:center;gap:8px}
+.d-pager button{min-height:32px;padding:0 12px;border:1px solid #dcdfe6;border-radius:8px;background:#fff;font-size:12px}
+.d-pager button:disabled{opacity:.45;cursor:default}
+.d-empty{padding:40px 12px;text-align:center;color:#707888}
+
+.d-seller{max-width:800px}
+.d-sd-head{display:flex;align-items:flex-start;gap:14px;padding:18px 20px 14px;border-bottom:1px solid #edeff2}
+.d-sd-id{flex:1;min-width:0}
+.d-sd-id h3{margin:0;font-size:19px;font-weight:800;color:#172134}
+.d-sd-id p{margin:3px 0 10px;font-size:12px;font-weight:700;color:#15377c}
+.d-sd-body{display:grid;grid-auto-rows:max-content;align-content:start;gap:12px;padding:14px 16px 16px;overflow:auto;background:#f6f7f8}
+.d-sd-two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.d-kbox{min-width:0;padding:14px 16px;border:1px solid #dadee5;border-radius:11px;background:#fff}
+.d-kbox > span,.d-grp-grid span{display:block;font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#5e6675}
+.d-grp-grid span{color:#243f74}
+.d-kbox > strong{display:block;margin:6px 0;font-size:22px;font-weight:700;color:#1c263b;font-variant-numeric:tabular-nums;white-space:nowrap}
+.d-ln{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;font-size:11px;color:#7d838f}
+.d-kbox small{display:block;margin-top:5px;font-size:11px;color:#7d838f}
+.d-grp{overflow:hidden;border:1px solid #dadee5;border-radius:11px;background:#fff}
+.d-grp h5{margin:0;padding:10px 16px;background:#f2f4f7;border-bottom:1px solid #dce0e8;font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#233760}
+.d-grp-grid{display:grid;grid-template-columns:1fr 1fr}
+.d-grp-grid > div{min-width:0;padding:12px 16px}
+.d-grp-grid > div + div{border-left:1px solid #dce0e8;background:#fafbfc}
+.d-grp-grid > div + div span{color:#606a7e}
+.d-grp-grid strong{display:block;margin:4px 0 6px;font-size:20px;font-weight:700;color:#1c263b;font-variant-numeric:tabular-nums;white-space:nowrap}
+.d-chartbox{padding:14px 16px;border:1px solid #dadee5;border-radius:11px;background:#fff}
+.d-chart-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 10px;margin-bottom:10px}
+.d-chart-head h5{margin:0;font-size:13px;font-weight:700;color:#1c263b}
+.d-chart-head span{font-size:11px;color:#7d838f}
+.d-chart{padding:10px 8px 4px;border:1px solid #edeff2;border-radius:9px}
+.d-chart svg{display:block;width:100%;height:auto;fill:none;stroke:none}
+.d-legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:10px;font-size:11px;color:#6b7280}
+.d-legend i{display:inline-block;width:10px;height:10px;margin-right:6px;border-radius:3px;vertical-align:-1px}
+
+@container dash (max-width:1100px){
+  .d-metric{grid-template-columns:minmax(0,1fr) minmax(200px,1fr)}
+}
+@container dash (max-width:900px){
+  .d-revenue{grid-template-columns:1fr}
+  .d-pairs{grid-template-columns:1fr}
+  .d-team-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .d-cat-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .d-lower{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .d-lower .d-pay{grid-column:1/-1}
+  .d-value{font-size:34px}
+  .d-reading > strong{font-size:26px}
+  .d-tr > strong{font-size:24px}
+}
+@container dash (max-width:760px){
+  .d-overlay{padding:8px}
+  .d-srow{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 14px}
+  .d-sid{grid-column:1/-1}
+  .d-ss-top{flex-wrap:wrap}
+  .d-ss-id{order:1;flex:1}
+  .d-ss-top .d-close{order:2}
+  .d-ss-period{order:3;width:100%;margin:0}
+  .d-ss-tools{flex-direction:column}
+  .d-ss-tools select{max-width:none}
+  .d-ss-foot{flex-direction:column;align-items:stretch;text-align:center}
+  .d-pager{justify-content:space-between}
+}
+@container dash (max-width:620px){
+  .d-top{min-height:74px;padding:14px 16px;margin-bottom:14px}
+  .d-top h1{font-size:19px;letter-spacing:-.35px}
+  .d-snap{display:none}
+  .d-main{padding:0 12px 18px}
+  .d-filters{position:static;grid-template-columns:1fr;gap:10px;padding:12px;margin-bottom:18px;border-radius:14px}
+  .d-reset{border-left:0;border-top:1px solid #e4e6eb;min-height:38px;margin-top:2px}
+  .d-title{flex-direction:column;align-items:flex-start;gap:3px}
+  .d-title h2{font-size:18px}
+  .d-metric{grid-template-columns:1fr;grid-template-areas:"top" "value" "target" "cmp";min-height:0;gap:10px;padding:18px;border-radius:14px}
+  .d-value{font-size:30px}
+  .d-tfoot p{font-size:11px}
+  .d-card{padding:16px;border-radius:14px}
+  .d-reading > strong{font-size:22px}
+  .d-team-grid{grid-template-columns:1fr;gap:12px}
+  .d-cat-list{grid-template-columns:1fr;gap:14px}
+  .d-cat-line{grid-template-columns:30px minmax(12px,1fr) auto 40px;font-size:12px}
+  .d-lower{grid-template-columns:1fr}
+  .d-lower .d-pay{grid-column:auto}
+  .d-panel{border-radius:14px}
+  .d-sd-head{padding:14px}
+  .d-sd-id h3{font-size:16px}
+  .d-sd-body{padding:10px}
+  .d-kbox{padding:12px}
+  .d-kbox > strong{font-size:18px}
+  .d-grp-grid > div{padding:10px 12px}
+  .d-grp-grid strong{font-size:17px}
+  .d-pm-body,.d-pm-head,.d-pm-foot{padding-inline:14px}
+}
+@container dash (max-width:400px){
+  .d-sd-two{grid-template-columns:1fr}
+  .d-reading{padding:10px 9px}
+  .d-reading > strong{font-size:20px}
+  .d-scol > strong{font-size:13px}
+}
+
+/* Em telas estreitas (e nas capturas) o painel da seção "ao vivo" corre junto
+   com a página, e as janelas passam a cobrir a tela inteira. */
+html.flow .dash-host.flowable{height:auto}
+html.flow .flowable > .dash-frame{position:relative;inset:auto;overflow:visible}
+html.flow .flowable .d-scroll{position:relative;inset:auto;overflow:visible}
+html.flow .flowable > .d-layer{position:fixed;z-index:200}
+html.flow.d-lock,html.flow.d-lock body{overflow:hidden}
+html.flow .phone .dash-host{pointer-events:none}
+html.flow .phone .d-scroll{overflow:hidden}
+html.flow .phone-screen{height:600px}
+html.flow .phone-cta{display:flex;position:absolute;left:0;right:0;bottom:0;z-index:40;justify-content:center;padding:90px 16px 22px;background:linear-gradient(180deg,rgba(245,247,248,0),#f5f7f8 58%)}
+html.flow .phone-cta a{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;background:#132d61;color:#fff;font-weight:600;font-size:14px;text-decoration:none}
+html.flow .device-note{display:none}
+
+body.shot{background:#f5f7f8}
+body.shot > :not(.dash-host):not(.sprite){display:none!important}
+</style>
+
+</head>
+<body>
+<svg class="sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 3v17h17M8 14l4-5 4 3 5-7"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3M16 5a3 3 0 0 1 0 6M18 14a5 5 0 0 1 3 5v2"/></symbol>
+<symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M2 10h20M6 16h4"/></symbol>
+<symbol id="i-bag" viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="14" rx="2"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 7V3m0 4h-4M20 7a9 9 0 1 0 1 8"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+<symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/></symbol>
+<symbol id="i-trend" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M11 18h2"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3L3 8l9 5 9-5-9-5zM3 13l9 5 9-5M3 17.5l9 5 9-5"/></symbol>
+<symbol id="i-split" viewBox="0 0 24 24"><path d="M4 20V10M9 20V4M15 20v-8M20 20V7"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+</defs></svg>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#inicio"><span class="mark">DS</span><span>Daniel Silva</span></a>
+    <nav class="nav-links" aria-label="Seções">
+      <a href="#projeto">O projeto</a>
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#painel">Painel ao vivo</a>
+      <a href="#sobre">Sobre</a>
+    </nav>
+    <a class="nav-cta" href="https://www.linkedin.com/in/danielsilva185/" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">↗</span></a>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="inicio">
+    <div class="wrap hero-in">
+      <div>
+        <p class="eyebrow">Portfólio · Dados de vendas e KPIs</p>
+        <h1>Da base crua do banco de dados ao <em>celular do gerente</em>, todo dia.</h1>
+        <p class="lede">Sou Daniel Silva, Assistente de Planejamento de Vendas. Construí de ponta a ponta um painel de KPIs que junta produção, faturamento, metas e clientes, da macro até o vendedor. Ele cabe em um único arquivo, que os gerentes distritais recebem pelo WhatsApp e abrem direto no celular.</p>
+        <div class="hero-actions">
+          <a class="btn btn-mint" href="#painel">Explorar o painel <span aria-hidden="true">↓</span></a>
+          <a class="btn btn-line" href="https://www.linkedin.com/in/danielsilva185/" target="_blank" rel="noopener">Falar comigo no LinkedIn</a>
+        </div>
+        <dl class="facts">
+          <div><dt>4</dt><dd>níveis de leitura: macro, região, filial e vendedor</dd></div>
+          <div><dt>5</dt><dd>bases de dados consolidadas em uma tela</dd></div>
+          <div><dt>15</dt><dd>KPIs comparados com o ano anterior</dd></div>
+          <div><dt>1</dt><dd>arquivo, sem login e sem instalar nada</dd></div>
+        </dl>
+      </div>
+      <div class="device">
+        <div class="wa" aria-hidden="true">
+          <div class="wa-file"><span class="wa-doc">HTML</span><div><strong>Radar_Vendas.html</strong><small>Documento · abre no navegador</small></div></div>
+          <p class="wa-text">Bom dia! Segue o painel atualizado com a base de hoje.</p>
+          <span class="wa-time">09:45<b>✓✓</b></span>
+        </div>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-status"><span>9:46</span><span class="notch"></span><span class="sig">4G <span class="bat"></span></span></div>
+            <div class="dash-host" id="host-phone" aria-label="Painel na versão de celular, com dados fictícios"></div>
+            <div class="phone-cta"><a href="#painel">Abrir o painel completo <span aria-hidden="true">↓</span></a></div>
+          </div>
+        </div>
+        <p class="device-note">Versão de celular real, com dados fictícios. Role e toque dentro da tela.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="projeto">
+    <div class="wrap">
+      <div class="head">
+        <p class="kicker">O projeto</p>
+        <h2>Um problema de leitura, resolvido com dados bem tratados</h2>
+        <p>O número existia, mas não chegava a quem decide. O trabalho foi transformar uma base crua em uma leitura que o gerente entende em segundos, no celular, sem pedir relatório para ninguém.</p>
+      </div>
+      <div class="story">
+        <article>
+          <span class="tag tag-bad">O problema</span>
+          <h3>Os distritais não enxergavam os números da própria macro</h3>
+          <p>A informação estava no banco de dados, mas crua, espalhada em várias bases e sem comparação com a meta ou com o ano anterior. Acompanhar região, loja e vendedor dava trabalho e demorava.</p>
+        </article>
+        <article>
+          <span class="tag tag-good">A solução</span>
+          <h3>Um painel único, da extração à tela final</h3>
+          <p>Reúne resultado, meta, ritmo de pedidos, equipe, mix de categorias, formas de pagamento e clientes. Os filtros de data, região e filial recalculam tudo na hora, até o nível do vendedor.</p>
+        </article>
+        <article>
+          <span class="tag tag-blue">No dia a dia</span>
+          <h3>Chega todo dia pelo WhatsApp e abre no celular</h3>
+          <p>O arquivo é enviado diariamente aos gerentes distritais. Eles abrem no navegador do celular, sem login e sem instalar nada, com um layout pensado para a tela pequena.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="como-funciona">
+    <div class="wrap">
+      <div class="head">
+        <p class="kicker">Como funciona</p>
+        <h2>Quatro etapas entre o banco de dados e o gerente</h2>
+        <p>A parte que não aparece na tela é a que deixa o número confiável: extrair certo, aplicar as regras do negócio e consolidar cada nível sem perder a comparação.</p>
+      </div>
+      <ol class="pipeline">
+        <li class="step">
+          <span class="step-n">01</span>
+          <h3>Extração</h3>
+          <span class="tool">SQL</span>
+          <p>Consultas em SQL puxam do banco de dados a base crua de vendas, metas, formas de pagamento e clientes.</p>
+        </li>
+        <li class="step">
+          <span class="step-n">02</span>
+          <h3>Tratamento</h3>
+          <span class="tool">regras de negócio</span>
+          <p>As quebras que deixam o número real: com e sem Linha Casa, categorias, formas de pagamento, dias trabalhados por vendedor, lojas comparáveis e o mesmo período do ano anterior.</p>
+        </li>
+        <li class="step">
+          <span class="step-n">03</span>
+          <h3>Consolidação</h3>
+          <span class="tool">macro → vendedor</span>
+          <p>Tudo é consolidado em quatro níveis (macro, região, filial e vendedor), com meta acumulada, atingimento e quanto falta para bater a meta.</p>
+        </li>
+        <li class="step">
+          <span class="step-n">04</span>
+          <h3>Entrega</h3>
+          <span class="tool">HTML · CSS · JavaScript</span>
+          <p>As cinco análises vão comprimidas para dentro de um único HTML. O navegador descomprime e calcula os filtros na hora, sem servidor. O arquivo segue pelo WhatsApp.</p>
+        </li>
+      </ol>
+      <div class="tech">
+        <div class="code">
+          <div class="code-top"><b>Radar_Vendas.html</b><span>trecho da etapa 04</span></div>
+<pre><span class="c">// Cada análise viaja comprimida (gzip + base64) dentro do próprio arquivo</span>
+<span class="k">const</span> bytes = Uint8Array.<span class="f">from</span>(<span class="f">atob</span>(FONTES[chave]), c =&gt; c.<span class="f">charCodeAt</span>(<span class="s">0</span>));
+<span class="k">const</span> html = <span class="k">await new</span> <span class="f">Response</span>(
+  <span class="k">new</span> <span class="f">Blob</span>([bytes]).<span class="f">stream</span>()
+    .<span class="f">pipeThrough</span>(<span class="k">new</span> <span class="f">DecompressionStream</span>(<span class="s">'gzip'</span>))
+).<span class="f">text</span>();
+<span class="c">// o módulo roda em segundo plano e devolve os KPIs para a tela</span></pre>
+          <p class="code-note">Por isso o painel funciona como um anexo comum: não depende de servidor, de login nem de internet depois de aberto.</p>
+        </div>
+        <div class="kpis">
+          <h3>15 KPIs em uma tela</h3>
+          <p>Todos com o mesmo período do ano anterior (AA) ao lado.</p>
+          <ul>
+            <li>Produção</li><li>Faturamento</li><li>Meta acumulada</li><li>Atingimento da meta</li>
+            <li>Pedidos por dia</li><li>Pedidos por vendedor/dia</li><li>Ticket médio</li>
+            <li>Quantidade de vendedores</li><li>Produção média por vendedor</li><li>Produção média por dia</li>
+            <li>Vendedores com R$ 150 mil ou mais</li><li>Produção por categoria</li><li>Formas de pagamento</li>
+            <li>Clientes únicos</li><li>Clientes novos</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="painel">
+    <div class="wrap wrap-wide">
+      <div class="head">
+        <p class="kicker">Painel ao vivo</p>
+        <h2>Teste o painel com dados fictícios</h2>
+        <p>É o mesmo layout que os gerentes usam, com números gerados só para esta demonstração. Filtros, comparações e telas de detalhe funcionam de verdade.</p>
+      </div>
+      <p class="try"><b>Experimente:</b><span>trocar a data</span><span>filtrar uma região ou filial</span><span>abrir Vendedores</span><span>ver o dia a dia de um vendedor</span></p>
+      <div class="browser">
+        <div class="browser-bar">
+          <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="url"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-lock"/></svg><span>Radar_Vendas.html · arquivo local</span></span>
+          <span class="bar-gap" aria-hidden="true"></span>
+        </div>
+        <div class="dash-host flowable" id="host-demo" aria-label="Painel de vendas interativo com dados fictícios"></div>
+      </div>
+      <p class="fine">Nomes de filiais, vendedores e todos os valores são fictícios. O painel original usa dados reais da empresa e não é divulgado.</p>
+    </div>
+  </section>
+
+  <section class="section" id="decisoes">
+    <div class="wrap">
+      <div class="head">
+        <p class="kicker">Decisões de design</p>
+        <h2>Pensado para quem lê no celular, entre uma loja e outra</h2>
+      </div>
+      <div class="decisions">
+        <article class="decision"><span class="ico"><svg><use href="#i-target"/></svg></span><h3>Resultado e meta no mesmo cartão</h3><p>Produção e faturamento abrem a tela com meta acumulada, atingimento e quanto falta. O gerente não precisa fazer conta.</p></article>
+        <article class="decision"><span class="ico"><svg><use href="#i-trend"/></svg></span><h3>Tudo contra o ano anterior</h3><p>Cada indicador traz o mesmo período do ano passado, com seta e cor para a variação. Crescimento e queda aparecem no primeiro olhar.</p></article>
+        <article class="decision"><span class="ico"><svg><use href="#i-calendar"/></svg></span><h3>Período ao lado do número</h3><p>Todo acumulado diz até quando vale, para não ser lido como média corrida nem como um dia isolado.</p></article>
+        <article class="decision"><span class="ico"><svg><use href="#i-split"/></svg></span><h3>Com e sem Linha Casa, lado a lado</h3><p>Pedidos e ticket aparecem com e sem estilo de vida, decoração, organização e limpeza, para separar o efeito dos itens de menor valor.</p></article>
+        <article class="decision"><span class="ico"><svg><use href="#i-phone"/></svg></span><h3>Layout próprio para o celular</h3><p>Em tela pequena o painel ganha outra composição, com os números empilhados na ordem de leitura e botões do tamanho do dedo.</p></article>
+        <article class="decision"><span class="ico"><svg><use href="#i-layers"/></svg></span><h3>Do total da macro ao vendedor</h3><p>Região e filial recalculam tudo na hora, e cada vendedor tem uma ficha com produção, pedidos, ticket e o gráfico dia a dia.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="sobre">
+    <div class="wrap about">
+      <div class="about-card">
+        <p class="kicker">Sobre mim</p>
+        <h2>Cresci dentro do varejo, da operação ao planejamento</h2>
+        <p>Comecei como Jovem Aprendiz e hoje estou no Planejamento de Vendas, onde acompanho KPIs de produção, faturamento, ticket médio e atingimento de metas, escrevo consultas em SQL e desenvolvo dashboards e automações para disponibilizar os dados. Curso Engenharia de Produção e sigo me aprofundando em análise de dados e Python.</p>
+        <p class="label">Ferramentas</p>
+        <div class="chips"><span>SQL</span><span>Excel</span><span>Python</span><span>HTML, CSS e JavaScript</span><span>PowerPoint</span><span>SAP (básico)</span></div>
+        <p class="label">Formação</p>
+        <div class="edu"><strong>Engenharia de Produção · FSG</strong><span>desde 08/2025, cursando</span></div>
+      </div>
+      <div class="about-card">
+        <p class="kicker">Trajetória</p>
+        <p class="company">Lojas Quero-Quero · Cachoeirinha, RS</p>
+        <ol class="timeline">
+          <li><small>07/2026 – atual</small><strong>Assistente de Planejamento de Vendas</strong><p>KPIs de vendas, dashboards e relatórios, consultas em SQL, automações e análises de performance.</p></li>
+          <li><small>04/2026 – 07/2026</small><strong>Assistente de Operações</strong><p>Suporte do setor de Operações Vendas às mais de 580 lojas da rede, análises de dados e automação de relatórios.</p></li>
+          <li><small>10/2024 – 04/2026</small><strong>Auxiliar de Operações</strong></li>
+          <li><small>início da trajetória</small><strong>Jovem Aprendiz Administrativo</strong></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contato">
+    <div class="wrap">
+      <div class="contact">
+        <div>
+          <h2>Vamos conversar sobre dados?</h2>
+          <p>Se você trabalha com planejamento comercial, BI ou análise de vendas e quer trocar uma ideia, me chama no LinkedIn.</p>
+        </div>
+        <div class="contact-side">
+          <a class="btn btn-mint" href="https://www.linkedin.com/in/danielsilva185/" target="_blank" rel="noopener">Abrir meu LinkedIn <span aria-hidden="true">↗</span></a>
+          <span class="handle"><span id="handle-text">linkedin.com/in/danielsilva185</span><button type="button" class="copy" id="copy-handle">Copiar</button></span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap site-foot">
+  <span>Daniel Silva · 2026</span>
+  <span>Todos os números do painel desta página são fictícios.</span>
+</footer>
+
+<script>
+(() => {
+'use strict';
+
+/* ---------- Formatação ---------- */
+const NF0 = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 });
+const NF1 = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const int = v => NF0.format(Math.round(v));
+const brl = v => 'R$ ' + NF0.format(Math.round(v));
+const brl1 = v => 'R$ ' + NF1.format(v);
+const dec = v => NF1.format(v);
+const signed = v => (v > 0 ? '+' : '') + NF1.format(v) + '%';
+const pad = n => String(n).padStart(2, '0');
+const LAST = 25;                       // último dia com dados na demonstração
+const br = d => pad(d) + '/09/2026';
+const brShort = d => pad(d) + '/09';
+const iso = d => '2026-09-' + pad(d);
+const fromIso = s => { if (!s) return null; if (s < iso(1)) return 1; if (s > iso(LAST)) return LAST; return +s.slice(8, 10); };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+const sum = a => a.reduce((x, y) => x + y, 0);
+const dow = (year, d) => new Date(year, 8, d).getDay();
+const weekStart = d => Math.max(1, d - dow(2026, d));
+
+/* ---------- Dados fictícios (gerador com semente fixa) ---------- */
+function mulberry32(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const rnd = mulberry32(260925);
+const gauss = () => { let u = 0; while (!u) u = rnd(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * rnd()); };
+const between = (a, b) => a + (b - a) * rnd();
+const pick = arr => arr[Math.floor(rnd() * arr.length)];
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+const DOW_W = [0.35, 0.93, 0.88, 0.9, 0.96, 1.12, 1.28];   // domingo a sábado
+const P_WORK = d => d === 0 ? 0.2 : 0.9;
+const HOLIDAY = 7;                                           // 7 de setembro
+const REGIONS = [
+  { id: '02', name: '02 - METROPOLITANA' },
+  { id: '05', name: '05 - SERRA' },
+  { id: '09', name: '09 - LITORAL' },
+];
+const BRANCH_DEF = [
+  ['11', 'PORTO ALVORADA - CENTRO', '02'], ['18', 'PORTO ALVORADA - AV. DAS INDÚSTRIAS', '02'],
+  ['23', 'VILA SOLAR - PRAÇA DA MATRIZ', '02'], ['27', 'CAMPO DOURADO - RUA DAS FLORES', '02'],
+  ['31', 'SÃO LUCAS DO SUL - CENTRO', '02'], ['36', 'NOVA AURORA - AV. BRASIL', '02'],
+  ['42', 'SANTA LÚCIA - RUA XV', '02'], ['48', 'LAGO AZUL - AV. CENTRAL', '02'],
+  ['52', 'SERRA DOURADA - CENTRO', '05'], ['55', 'SERRA DOURADA - PLANALTO', '05'],
+  ['57', 'VALE DAS UVAS - PRAÇA CENTRAL', '05'], ['61', 'PEDRA ALTA - RUA DOS IMIGRANTES', '05'],
+  ['64', 'CAMPOS ALTOS - AV. PRINCIPAL', '05'], ['68', 'SÃO VICENTE DA SERRA - CENTRO', '05'],
+  ['71', 'BOA VISTA DO VALE - RUA NOVA', '05'], ['75', 'NEBLINA - AV. DAS HORTÊNSIAS', '05'],
+  ['80', 'PRAIA AZUL - AV. BEIRA-MAR', '09'], ['83', 'PRAIA AZUL - CENTRO', '09'],
+  ['86', 'LAGOA SERENA - RUA DO PORTO', '09'], ['89', 'BARRA DO SOL - CENTRO', '09'],
+  ['92', 'DUNAS ALTAS - AV. ATLÂNTICA', '09'], ['95', 'MAR GRANDE - RUA DAS GAIVOTAS', '09'],
+  ['97', 'AREIAS BRANCAS - CENTRO', '09'], ['99', 'CANOA VELHA - PRAÇA DO FAROL', '09'],
+];
+const CATS = ['Materiais Básicos', 'Construção', 'Eletro', 'Móveis', 'Estilo de Vida', 'Decoração, Organização e Limpeza'];
+const CAT_MIX = { cur: [0.222, 0.372, 0.262, 0.144], aa: [0.21, 0.405, 0.245, 0.14] };
+const EV_SHARE = { cur: 0.8, aa: 0.6 };
+const PAYS = ['Cartão da loja', 'Pix', 'Dinheiro', 'Débito', 'Cartões de crédito', 'Outros'];
+const PAY_MIX = { cur: [0.472, 0.184, 0.114, 0.106, 0.091, 0.033], aa: [0.49, 0.152, 0.113, 0.11, 0.074, 0.061] };
+const FIRST = ['ANA PAULA', 'BRUNO', 'CAMILA', 'DIEGO', 'EDUARDA', 'FELIPE', 'GABRIELA', 'GUSTAVO', 'HELENA', 'IGOR', 'JULIANA', 'LEONARDO', 'LETÍCIA', 'LUCAS', 'MARIANA', 'MATEUS', 'NATÁLIA', 'PAULO', 'RAFAELA', 'RODRIGO', 'SABRINA', 'THIAGO', 'VANESSA', 'VINÍCIUS', 'ALINE', 'CARLOS', 'DÉBORA', 'FERNANDO', 'GIOVANA', 'JOÃO PEDRO', 'LARISSA', 'MARCOS', 'PATRÍCIA', 'RICARDO', 'TATIANE', 'VITOR', 'ADRIANA', 'CRISTIANO', 'ELISA', 'MAURÍCIO', 'ROSANA', 'SÉRGIO', 'LUANA', 'ANDERSON', 'BIANCA', 'JÉSSICA', 'MARCELO', 'SIMONE'];
+const SURN = ['ALMEIDA', 'BARBOSA', 'CARDOSO', 'DIAS', 'FERREIRA', 'GOMES', 'LIMA', 'MACHADO', 'MARTINS', 'MOREIRA', 'NUNES', 'OLIVEIRA', 'PEREIRA', 'RAMOS', 'RIBEIRO', 'ROCHA', 'SANTOS', 'SILVEIRA', 'SOUZA', 'TEIXEIRA', 'VIEIRA', 'AZEVEDO', 'BORGES', 'CAMPOS', 'CORRÊA', 'FONSECA', 'FREITAS', 'KLEIN', 'MÜLLER', 'SCHMIDT', 'WEBER', 'BECKER', 'PORTO', 'QUADROS', 'MEDEIROS', 'BRUM', 'PACHECO', 'FAGUNDES', 'ÁVILA', 'MOTTA'];
+
+const usedNames = new Set();
+function makeName() {
+  for (;;) {
+    const a = pick(SURN); let b = pick(SURN); while (b === a) b = pick(SURN);
+    const n = `${pick(FIRST)} ${a}${rnd() < 0.3 ? ' ' + pick(['DA', 'DE']) : ''} ${b}`;
+    if (!usedNames.has(n)) { usedNames.add(n); return n; }
+  }
+}
+
+function simDay(year, d, base, ticket, s) {
+  if (d === HOLIDAY) return null;
+  const w = dow(year, d);
+  if (rnd() > P_WORK(w)) return null;
+  if (rnd() < 0.05) return { p: 0, o: 0, oe: 0, ve: 0 };
+  const p = base * DOW_W[w] * Math.exp(0.5 * gauss()) / 1.133;
+  const o = Math.max(0.5, Math.round(p / (ticket * Math.exp(0.16 * gauss())) * 2) / 2);
+  const oe = Math.min(o - 0.5, Math.round(o * s.evOrd * Math.exp(0.3 * gauss()) * 2) / 2);
+  return { p, o, oe: Math.max(0, oe), ve: p * s.evOrd * s.evVal };
+}
+
+const BRANCHES = BRANCH_DEF.map(([id, name, region]) => ({
+  id, region, label: `${id} - ${name}`, regionName: REGIONS.find(r => r.id === region).name,
+  size: between(0.75, 1.35), perf: Math.exp(0.08 * gauss()), target: between(1.02, 1.2), billRatio: between(0.9, 0.97),
+  sellers: [], meta: [], metaBill: [], day: { cur: [], aa: [] },
+}));
+
+let sid = 0;
+for (const b of BRANCHES) {
+  const active = 5 + Math.floor(rnd() * 5);
+  const gone = rnd() < 0.55 ? 1 + (rnd() < 0.3 ? 1 : 0) : 0;
+  for (let i = 0; i < active + gone; i++) {
+    const ex = i >= active;
+    const tenure = ex ? 24 : clamp(Math.round(Math.exp(Math.log(50) + 0.95 * gauss())), 2, 280);
+    const s = {
+      id: 's' + (++sid), ex, branch: b, name: ex ? '' : makeName(), tenure,
+      mat: String(Math.round(176000 - tenure * 190 + rnd() * 160)),
+      base: Math.exp(Math.log(3350 * b.size) + 0.36 * gauss()),
+      ticket: Math.exp(Math.log(640) + 0.28 * gauss()),
+      evOrd: between(0.06, 0.2), evVal: between(0.22, 0.42),
+      growth: clamp(0.12 + 0.2 * gauss(), -0.32, 0.85), cur: [], aa: [],
+    };
+    const aaFactor = s.tenure <= 12 ? 0 : s.tenure <= 15 ? between(0.18, 0.4) : 1;
+    const aaTicket = s.ticket * between(0.93, 1.06);
+    for (let d = 1; d <= LAST; d++) {
+      s.cur[d] = ex ? null : simDay(2026, d, s.base * b.perf, s.ticket, s);
+      s.aa[d] = aaFactor ? simDay(2025, d, s.base / (1 + s.growth) * aaFactor, aaTicket, s) : null;
+    }
+    b.sellers.push(s);
+  }
+}
+
+for (const b of BRANCHES) {
+  const potential = sum(b.sellers.filter(s => !s.ex).map(s => s.base));
+  for (let d = 1; d <= LAST; d++) {
+    const w = dow(2026, d);
+    b.meta[d] = d === HOLIDAY ? 0 : potential * DOW_W[w] * P_WORK(w) * 0.95 * b.target;
+    b.metaBill[d] = b.meta[d] * 0.93;
+    for (const key of ['cur', 'aa']) {
+      let p = 0, o = 0, oe = 0, ve = 0;
+      for (const s of b.sellers) { const x = s[key][d]; if (x) { p += x.p; o += x.o; oe += x.oe; ve += x.ve; } }
+      const mix = CAT_MIX[key].map(m => m * Math.exp(0.1 * gauss())), ms = sum(mix);
+      const pm = PAY_MIX[key].map(m => m * Math.exp(0.1 * gauss())), ps = sum(pm);
+      const u = o * 0.8 * Math.exp(0.05 * gauss());
+      b.day[key][d] = {
+        p, o, oe, ve,
+        bill: p * b.billRatio * Math.exp(0.09 * gauss()),
+        u, n: u * (key === 'cur' ? 0.079 : 0.074) * Math.exp(0.14 * gauss()),
+        cat: [...mix.map(m => (p - ve) * m / ms), ve * EV_SHARE[key], ve * (1 - EV_SHARE[key])],
+        pay: pm.map(m => p * m / ps),
+      };
+    }
+  }
+}
+
+/* ---------- Cálculo dos indicadores para um recorte ---------- */
+function sellerAgg(s, d1, d2) {
+  const a = { s, prod: 0, prodAA: 0, ord: 0, ordAA: 0, oe: 0, oeAA: 0, ve: 0, veAA: 0, worked: 0, workedAA: 0, moved: 0 };
+  for (let d = d1; d <= d2; d++) {
+    const c = s.cur[d], p = s.aa[d];
+    if (c) { a.worked++; a.prod += c.p; a.ord += c.o; a.oe += c.oe; a.ve += c.ve; if (c.p > 0) a.moved++; }
+    if (p) { a.workedAA++; a.prodAA += p.p; a.ordAA += p.o; a.oeAA += p.oe; a.veAA += p.ve; }
+  }
+  a.perDay = a.worked ? a.prod / a.worked : 0;
+  a.perDayAA = a.workedAA ? a.prodAA / a.workedAA : 0;
+  a.ordSem = a.ord - a.oe; a.ordSemAA = a.ordAA - a.oeAA;
+  a.ticket = a.ord ? a.prod / a.ord : 0; a.ticketAA = a.ordAA ? a.prodAA / a.ordAA : 0;
+  a.ticketSem = a.ordSem ? (a.prod - a.ve) / a.ordSem : 0;
+  a.ticketSemAA = a.ordSemAA ? (a.prodAA - a.veAA) / a.ordSemAA : 0;
+  a.growth = a.prodAA ? a.prod / a.prodAA - 1 : -Infinity;
+  return a;
+}
+
+function compute(st) {
+  const bs = BRANCHES.filter(b => (!st.regions.size || st.regions.has(b.region)) && (!st.branches.size || st.branches.has(b.id)));
+  const r = { prod: 0, prodAA: 0, bill: 0, billAA: 0, meta: 0, metaBill: 0, ord: 0, ordAA: 0, oe: 0, oeAA: 0, ve: 0, veAA: 0, uniq: 0, uniqAA: 0, novos: 0, novosAA: 0, cats: [0, 0, 0, 0, 0, 0], catsAA: [0, 0, 0, 0, 0, 0], pays: [0, 0, 0, 0, 0, 0], paysAA: [0, 0, 0, 0, 0, 0] };
+  const open = new Set(), openAA = new Set();
+  for (const b of bs) for (let d = st.d1; d <= st.d2; d++) {
+    const c = b.day.cur[d], a = b.day.aa[d];
+    r.prod += c.p; r.prodAA += a.p; r.bill += c.bill; r.billAA += a.bill; r.meta += b.meta[d]; r.metaBill += b.metaBill[d];
+    r.ord += c.o; r.ordAA += a.o; r.oe += c.oe; r.oeAA += a.oe; r.ve += c.ve; r.veAA += a.ve;
+    r.uniq += c.u; r.uniqAA += a.u; r.novos += c.n; r.novosAA += a.n;
+    for (let i = 0; i < 6; i++) { r.cats[i] += c.cat[i]; r.catsAA[i] += a.cat[i]; r.pays[i] += c.pay[i]; r.paysAA[i] += a.pay[i]; }
+    if (c.p > 0) open.add(d); if (a.p > 0) openAA.add(d);
+  }
+  const dedupe = n => n > 1 ? 1 / (1 + 0.017 * (n - 1)) : 1;       // cliente que volta no período conta uma vez
+  r.uniq *= dedupe(open.size); r.uniqAA *= dedupe(openAA.size);
+  r.ordDay = open.size ? r.ord / open.size : 0; r.ordDayAA = openAA.size ? r.ordAA / openAA.size : 0;
+  r.ordSemDay = open.size ? (r.ord - r.oe) / open.size : 0; r.ordSemDayAA = openAA.size ? (r.ordAA - r.oeAA) / openAA.size : 0;
+  r.ticket = r.ord ? r.prod / r.ord : 0; r.ticketAA = r.ordAA ? r.prodAA / r.ordAA : 0;
+  r.ticketSem = (r.ord - r.oe) ? (r.prod - r.ve) / (r.ord - r.oe) : 0;
+  r.ticketSemAA = (r.ordAA - r.oeAA) ? (r.prodAA - r.veAA) / (r.ordAA - r.oeAA) : 0;
+
+  const all = [];
+  for (const b of bs) for (const s of b.sellers) all.push(sellerAgg(s, st.d1, st.d2));
+  const cur = all.filter(a => a.prod > 0), prev = all.filter(a => a.prodAA > 0);
+  r.sellers = cur.filter(a => !a.s.ex);
+  r.qty = cur.length; r.qtyAA = prev.length;
+  const sd = sum(cur.map(a => a.worked)), sdAA = sum(prev.map(a => a.workedAA));
+  const sp = sum(cur.map(a => a.prod)), spAA = sum(prev.map(a => a.prodAA));
+  r.avg = r.qty ? sp / r.qty : 0; r.avgAA = r.qtyAA ? spAA / r.qtyAA : 0;
+  r.avgDay = sd ? sp / sd : 0; r.avgDayAA = sdAA ? spAA / sdAA : 0;
+  r.ordSeller = sd ? sum(cur.map(a => a.ord)) / sd : 0; r.ordSellerAA = sdAA ? sum(prev.map(a => a.ordAA)) / sdAA : 0;
+  r.ordSemSeller = sd ? sum(cur.map(a => a.ordSem)) / sd : 0; r.ordSemSellerAA = sdAA ? sum(prev.map(a => a.ordSemAA)) / sdAA : 0;
+  r.above = cur.filter(a => a.prod >= 150000).length; r.aboveAA = prev.filter(a => a.prodAA >= 150000).length;
+  return r;
+}
+
+/* ---------- Pedaços de interface ---------- */
+function delta(cur, prev, suffix = ' vs. AA') {
+  if (!prev) return '<span class="d-delta">sem base no AA</span>';
+  const v = (cur / prev - 1) * 100;
+  return `<span class="d-delta ${v >= 0 ? 'good' : 'bad'}">${v >= 0 ? '↗' : '↘'} ${signed(v)}${suffix}</span>`;
+}
+function vs(cur, prev) {
+  if (!prev) return '<span class="d-vs none">sem AA</span>';
+  const v = (cur / prev - 1) * 100;
+  return `<span class="d-vs${v < 0 ? ' bad' : ''}">${v >= 0 ? '↑' : '↓'} ${dec(Math.abs(v))}% vs AA</span>`;
+}
+function tenureText(m) {
+  const y = Math.floor(m / 12), mo = m % 12;
+  const ys = y ? `${y} ${y === 1 ? 'ano' : 'anos'}` : '', ms = mo ? `${mo} ${mo === 1 ? 'mês' : 'meses'}` : '';
+  return (ys && ms ? `${ys} e ${ms}` : ys || ms) + ' de casa';
+}
+function niceStep(x) { const p = 10 ** Math.floor(Math.log10(x)); const m = x / p; return (m <= 1 ? 1 : m <= 2 ? 2 : m <= 2.5 ? 2.5 : m <= 5 ? 5 : 10) * p; }
+function tick(v) { if (!v) return 'R$ 0'; if (v < 1000) return brl(v); const k = v / 1000; return 'R$ ' + (k % 1 ? NF1.format(k) : NF0.format(k)) + ' mil'; }
+
+const SORTS = [
+  ['production', 'Maior produção', (a, b) => b.prod - a.prod],
+  ['productionDay', 'Maior produção/dia', (a, b) => b.perDay - a.perDay],
+  ['orders', 'Mais pedidos', (a, b) => b.ord - a.ord],
+  ['ticket', 'Maior ticket médio', (a, b) => b.ticket - a.ticket],
+  ['variation', 'Maior crescimento vs AA', (a, b) => b.growth - a.growth || b.prod - a.prod],
+  ['name', 'Nome (A–Z)', (a, b) => a.s.name.localeCompare(b.s.name, 'pt-BR')],
+  ['branch', 'Filial', (a, b) => a.s.branch.id.localeCompare(b.s.branch.id) || b.prod - a.prod],
+];
+const PAGE = 40;
+
+/* ---------- Um painel completo dentro de um contêiner ---------- */
+function createDashboard(host, p) {
+  host.innerHTML = `
+<div class="dash-frame"><div class="d-scroll">
+  <header class="d-top">
+    <div class="d-brand"><h1>Radar de Vendas · Macro Sul</h1><span class="d-demo">Dados fictícios</span></div>
+    <div class="d-snap"><span class="d-dot"></span><div>Base de 26/09/2026 às 09:40<small>Somente a Macro Sul</small></div></div>
+  </header>
+  <div class="d-main">
+    <section class="d-filters" aria-label="Filtros do resumo">
+      <div class="d-field"><span class="d-label" id="${p}-l-date">Data</span>
+        <button type="button" class="d-control" data-act="period" aria-haspopup="dialog" aria-labelledby="${p}-l-date ${p}-date"><svg><use href="#i-calendar"/></svg><span id="${p}-date" data-out="label"></span></button></div>
+      <div class="d-field" data-dd="regions"><span class="d-label" id="${p}-l-reg">Região</span>
+        <button type="button" class="d-control d-select" data-act="dd" aria-haspopup="true" aria-expanded="false" aria-labelledby="${p}-l-reg ${p}-reg"><span id="${p}-reg" data-out="regions"></span><svg class="chev"><use href="#i-chev"/></svg></button>
+        <div class="d-menu" role="menu" hidden></div></div>
+      <div class="d-field" data-dd="branches"><span class="d-label" id="${p}-l-br">Filial</span>
+        <button type="button" class="d-control d-select" data-act="dd" aria-haspopup="true" aria-expanded="false" aria-labelledby="${p}-l-br ${p}-br"><span id="${p}-br" data-out="branches"></span><svg class="chev"><use href="#i-chev"/></svg></button>
+        <div class="d-menu" role="menu" hidden></div></div>
+      <button type="button" class="d-reset" data-act="reset" title="Voltar para o acumulado do mês e limpar os filtros"><svg><use href="#i-refresh"/></svg>Limpar</button>
+    </section>
+    <div class="d-title"><h2>Como estão as vendas?</h2><span data-out="label"></span></div>
+    <div class="d-revenue" data-out="revenue"></div>
+    <section class="d-card d-eff" data-out="eff" aria-label="Visão ticket/pedido"></section>
+    <article class="d-card d-team" data-act="sellers" data-sort="production" data-out="team" aria-label="Vendedores"></article>
+    <article class="d-card d-cats" data-out="cats" aria-label="Produção por categoria"></article>
+    <div class="d-lower" data-out="lower"></div>
+    <p class="d-foot">Criado por Daniel Silva</p>
+  </div>
+</div></div>
+<div class="d-layer"></div>`;
+
+  const layer = host.querySelector('.d-layer');
+  const st = { d1: 1, d2: LAST, regions: new Set(), branches: new Set() };
+  let R = null;
+  let ss = null;                                   // estado da lista de vendedores
+
+  const out = (name, html, text) => host.querySelectorAll(`[data-out="${name}"]`).forEach(el => { if (text) el.textContent = html; else el.innerHTML = html; });
+  const label = () => st.d1 === st.d2 ? `Dia ${br(st.d2)}` : st.d1 === 1 ? `Acumulado até ${br(st.d2)}` : `${brShort(st.d1)} a ${br(st.d2)}`;
+  const small = () => st.d1 === st.d2 ? `em ${br(st.d2)}` : st.d1 === 1 ? `acumulado até ${br(st.d2)}` : `de ${brShort(st.d1)} a ${br(st.d2)}`;
+  const phrase = () => st.d1 === st.d2 ? `em ${br(st.d2)}` : st.d1 === 1 ? `até ${br(st.d2)}` : `de ${brShort(st.d1)} a ${br(st.d2)}`;
+  const branchesIn = () => BRANCHES.filter(b => !st.regions.size || st.regions.has(b.region));
+  const setLabel = (set, list, all, one) => !set.size ? all : set.size === 1 ? list.find(x => set.has(x.id)).label : `${set.size} ${one}`;
+
+  function metric(name, primary, value, meta, aa, icon) {
+    const att = meta ? value / meta * 100 : 0, good = value >= meta, gap = Math.abs(meta - value);
+    return `<article class="d-metric${primary ? ' primary' : ''}">
+      <div class="d-metric-top"><span>${name}</span><svg><use href="#${icon}"/></svg></div>
+      <div class="d-value">${brl(value)}</div>
+      <div class="d-target"><div class="d-tgrid"><div><span>Meta acumulada</span><strong>${brl(meta)}</strong></div><div class="att"><span>Atingimento</span><strong>${dec(att)}%</strong></div></div>
+        <div class="d-tfoot"><span class="d-tchip${good ? ' good' : ''}">${good ? 'Meta batida' : 'Abaixo da meta'}</span><p>${good ? `${brl(gap)} acima da meta.` : `Faltam ${brl(gap)} para a meta.`}</p></div></div>
+      <div class="d-cmp"><span class="d-caption">AA: ${brl(aa)}</span>${delta(value, aa)}</div>
+    </article>`;
+  }
+  const reading = (cls, name, value, aaText, cur, prev) => `<div class="d-reading${cls}"><span>${name}</span><strong>${value}</strong><div class="d-cmp"><span class="d-caption">AA: ${aaText}</span>${delta(cur, prev)}</div></div>`;
+  const pair = (title, per, a, b) => `<section class="d-pair"><h4>${title}${per ? `<em>${per}</em>` : ''}</h4>${reading('', 'Com Linha Casa', ...a)}${reading(' sem', 'Sem Linha Casa', ...b)}</section>`;
+  const tr = (title, per, sort, value, aaText, cur, prev) => `<div class="d-tr" data-act="sellers" data-sort="${sort}"><div class="d-tr-head"><b>${title}</b>${per ? `<em>${per}</em>` : ''}</div><strong>${value}</strong><div class="d-cmp"><span class="d-caption">AA: ${aaText}</span>${delta(cur, prev)}</div></div>`;
+
+  function render() {
+    R = compute(st);
+    const r = R, per = small();
+    out('label', label(), true);
+    out('regions', setLabel(st.regions, REGIONS.map(x => ({ id: x.id, label: x.name })), 'Todas as regiões', 'regiões'), true);
+    out('branches', setLabel(st.branches, BRANCHES, 'Todas as filiais', 'filiais'), true);
+    out('revenue', metric('Produção', true, r.prod, r.meta, r.prodAA, 'i-chart') + metric('Faturamento', false, r.bill, r.metaBill, r.billAA, 'i-card'));
+    out('eff', `<div class="d-head"><div><h3>Visão ticket/pedido</h3><p>Linha Casa: estilo de vida, decoração, organização e limpeza</p></div><svg><use href="#i-chart"/></svg></div>
+      <div class="d-pairs">
+        ${pair('Pedidos/dia', per, [int(r.ordDay), int(r.ordDayAA), r.ordDay, r.ordDayAA], [int(r.ordSemDay), int(r.ordSemDayAA), r.ordSemDay, r.ordSemDayAA])}
+        ${pair('Pedidos/vendedor/dia', per, [dec(r.ordSeller), dec(r.ordSellerAA), r.ordSeller, r.ordSellerAA], [dec(r.ordSemSeller), dec(r.ordSemSellerAA), r.ordSemSeller, r.ordSemSellerAA])}
+        ${pair('Ticket médio', per, [brl1(r.ticket), brl1(r.ticketAA), r.ticket, r.ticketAA], [brl1(r.ticketSem), brl1(r.ticketSemAA), r.ticketSem, r.ticketSemAA])}
+      </div>`);
+    out('team', `<div class="d-head"><div><h3>Vendedores</h3><button type="button" class="d-pill" data-act="sellers" data-sort="production">clique aqui para ver os vendedores <span aria-hidden="true">→</span></button></div><svg><use href="#i-bag"/></svg></div>
+      <div class="d-team-grid">
+        ${tr('Quantidade', per, 'production', int(r.qty), int(r.qtyAA), r.qty, r.qtyAA)}
+        ${tr('Produção média acumulada', per, 'production', brl(r.avg), brl(r.avgAA), r.avg, r.avgAA)}
+        ${tr('Produção média/dia', '', 'productionDay', brl(r.avgDay), brl(r.avgDayAA), r.avgDay, r.avgDayAA)}
+        ${tr('Produção de 150k ou mais', per, 'production', int(r.above), int(r.aboveAA), r.above, r.aboveAA)}
+      </div>`);
+    const cmax = Math.max(1, ...r.cats, ...r.catsAA), ct = sum(r.cats) || 1, ctA = sum(r.catsAA) || 1;
+    out('cats', `<div class="d-head"><div><h3>Produção por categoria</h3></div></div><div class="d-cat-list">${CATS.map((name, i) => `
+      <div class="d-cat"><div class="d-cat-head"><span class="d-cat-name" title="${name}">${name}</span>${delta(r.cats[i], r.catsAA[i])}</div>
+        <div class="d-cat-line"><span>Atual</span><span class="d-bar"><i style="width:${(r.cats[i] / cmax * 100).toFixed(1)}%"></i></span><b>${brl(r.cats[i])}</b><em>${dec(r.cats[i] / ct * 100)}%</em></div>
+        <div class="d-cat-line aa"><span>AA</span><span class="d-bar"><i style="width:${(r.catsAA[i] / cmax * 100).toFixed(1)}%"></i></span><b>${brl(r.catsAA[i])}</b><em>${dec(r.catsAA[i] / ctA * 100)}%</em></div></div>`).join('')}</div>`);
+    const pt = sum(r.pays) || 1, lead = r.pays.indexOf(Math.max(...r.pays));
+    const cmp = (cur, prev, name) => { const m = Math.max(cur, prev, 1); return `<div class="d-comp"><div class="d-comp-row"><span>2026</span><span class="d-bar"><i style="width:${(cur / m * 100).toFixed(1)}%"></i></span><b>${int(cur)}</b></div><div class="d-comp-row aa"><span>2025</span><span class="d-bar"><i style="width:${(prev / m * 100).toFixed(1)}%"></i></span><b>${int(prev)}</b></div></div>`; };
+    const badge = (cur, prev) => { const v = prev ? (cur / prev - 1) * 100 : 0; return `<span class="d-badge${v < 0 ? ' bad' : ''}">${signed(v)}</span>`; };
+    out('lower', `
+      <section class="d-panel d-pay"><div class="d-phead"><span class="d-tile amber"><svg><use href="#i-card"/></svg></span><h3>Formas de pagamento</h3></div>
+        <p class="d-period">${label()}</p><p class="d-leader">${PAYS[lead]}</p>
+        <div class="d-mix">${PAYS.map((n, i) => `<div class="d-mix-row"><span>${n}</span><b>${dec(r.pays[i] / pt * 100)}%</b>${delta(r.pays[i], r.paysAA[i], '')}<span class="d-bar"><i style="width:${(r.pays[i] / pt * 100).toFixed(1)}%"></i></span></div>`).join('')}</div></section>
+      <section class="d-panel"><div class="d-phead"><span class="d-tile teal"><svg><use href="#i-users"/></svg></span><div><h3>Clientes únicos</h3><p>Considera clientes únicos, novos e da base</p></div></div>
+        <p class="d-period">${label()}</p><div class="d-big"><strong>${int(r.uniq)}</strong>${badge(r.uniq, r.uniqAA)}</div>
+        <p class="d-desc">Clientes únicos ${phrase()} · 2026 vs. 2025</p>${cmp(r.uniq, r.uniqAA)}</section>
+      <section class="d-panel"><div class="d-phead"><span class="d-tile blue"><svg><use href="#i-users"/></svg></span><h3>Clientes novos</h3></div>
+        <p class="d-period">${label()}</p><div class="d-big"><strong>${int(r.novos)}</strong>${badge(r.novos, r.novosAA)}</div>
+        <p class="d-desc">Novos de 2026 · variação sobre 2025</p>${cmp(r.novos, r.novosAA)}</section>`);
+  }
+
+  /* Menus de região e filial */
+  function closeMenus(except) {
+    host.querySelectorAll('.d-field[data-dd]').forEach(f => { if (f === except) return; f.querySelector('.d-menu').hidden = true; f.querySelector('.d-select').setAttribute('aria-expanded', 'false'); });
+  }
+  function fillMenu(field) {
+    const kind = field.dataset.dd, isR = kind === 'regions', set = isR ? st.regions : st.branches;
+    const opts = isR ? REGIONS.map(x => ({ id: x.id, label: x.name })) : branchesIn();
+    field.querySelector('.d-menu').innerHTML =
+      `<button type="button" class="d-opt all" role="menuitemcheckbox" data-act="opt" data-id="" aria-checked="${!set.size}"><span class="d-box"></span>${isR ? 'Todas as regiões' : 'Todas as filiais'}</button>` +
+      opts.map(o => `<button type="button" class="d-opt" role="menuitemcheckbox" data-act="opt" data-id="${o.id}" aria-checked="${set.has(o.id)}"><span class="d-box"></span>${esc(o.label)}</button>`).join('');
+  }
+
+  /* Janelas */
+  function pushOverlay(html) {
+    const ov = document.createElement('div');
+    ov.className = 'd-overlay';
+    ov.innerHTML = html;
+    ov.addEventListener('click', e => { if (e.target === ov) closeTop(); });
+    layer.appendChild(ov);
+    syncLock();
+    requestAnimationFrame(() => { const f = ov.querySelector('[data-focus]') || ov.querySelector('.d-close'); if (f) f.focus({ preventScroll: true }); });
+    return ov;
+  }
+  function closeTop() { const ov = layer.lastElementChild; if (ov) { ov.remove(); syncLock(); } if (!layer.querySelector('.d-sellers')) ss = null; }
+
+  function openPeriod() {
+    const ov = pushOverlay(`<div class="d-modal d-pm" role="dialog" aria-modal="true" aria-labelledby="${p}-pm-t">
+      <header class="d-pm-head"><h3 id="${p}-pm-t">Data</h3><button type="button" class="d-close" data-act="close" aria-label="Fechar"><svg><use href="#i-close"/></svg></button></header>
+      <div class="d-pm-body">
+        <div class="d-pm-fields"><label>De<input type="date" id="${p}-from" min="${iso(1)}" max="${iso(LAST)}" value="${iso(st.d1)}"></label><label>Até<input type="date" id="${p}-to" data-focus min="${iso(1)}" max="${iso(LAST)}" value="${iso(st.d2)}"></label></div>
+        <div class="d-quick"><button type="button" data-act="quick" data-q="acc">Acumulado</button><button type="button" data-act="quick" data-q="week">Semana</button><button type="button" data-act="quick" data-q="day">Último dia</button></div>
+        <p class="d-note">A demonstração tem dados de 01/09 a 25/09/2026. Como no painel original, o intervalo vale dentro de um mês e toda comparação usa as mesmas datas do ano anterior.</p>
+      </div>
+      <footer class="d-pm-foot"><span data-pm="preview"></span><button type="button" class="d-apply" data-act="apply">Aplicar</button></footer>
+    </div>`);
+    ov.querySelectorAll('input').forEach(i => i.addEventListener('input', () => preview(ov)));
+    preview(ov);
+  }
+  function readRange(ov) {
+    let a = fromIso(ov.querySelector(`#${p}-from`).value) || 1, b = fromIso(ov.querySelector(`#${p}-to`).value) || LAST;
+    if (a > b) [a, b] = [b, a];
+    return [a, b];
+  }
+  function preview(ov) {
+    const [a, b] = readRange(ov), n = b - a + 1;
+    const kind = a === b ? 'Dia' : a === 1 ? 'Acumulado' : a === weekStart(b) ? 'Semana' : 'Período';
+    ov.querySelector('[data-pm="preview"]').textContent = `${kind} · ${br(a)} a ${br(b)} · ${n} ${n === 1 ? 'dia' : 'dias'}`;
+    const q = a === b ? 'day' : a === 1 ? 'acc' : a === weekStart(b) ? 'week' : '';
+    ov.querySelectorAll('[data-q]').forEach(x => x.classList.toggle('on', x.dataset.q === q));
+  }
+
+  function openSellers(sort) {
+    ss = { q: '', sort: sort || 'production', page: 0 };
+    const ov = pushOverlay(`<div class="d-modal d-sellers" role="dialog" aria-modal="true" aria-labelledby="${p}-ss-t">
+      <header class="d-ss-head">
+        <div class="d-ss-top"><div class="d-ss-id"><h2 id="${p}-ss-t">Vendedores</h2><p data-ss="sub"></p></div><p class="d-ss-period">${label()}</p><button type="button" class="d-close" data-act="close" aria-label="Fechar a lista"><svg><use href="#i-close"/></svg></button></div>
+        <div class="d-ss-tools"><input type="search" id="${p}-ss-q" data-focus placeholder="Buscar por nome, matrícula, filial ou região" aria-label="Buscar vendedor" autocomplete="off">
+          <select id="${p}-ss-sort" aria-label="Ordenar a lista">${SORTS.map(([v, t]) => `<option value="${v}"${v === ss.sort ? ' selected' : ''}>${t}</option>`).join('')}</select></div>
+      </header>
+      <div class="d-ss-list" data-ss="list"></div>
+      <footer class="d-ss-foot"><span data-ss="count"></span><div class="d-pager"><button type="button" data-act="prev">Anterior</button><span data-ss="page"></span><button type="button" data-act="next">Próxima</button></div></footer>
+    </div>`);
+    ov.querySelector('input').addEventListener('input', e => { ss.q = e.target.value; ss.page = 0; renderSellers(); });
+    ov.querySelector('select').addEventListener('change', e => { ss.sort = e.target.value; ss.page = 0; renderSellers(); });
+    renderSellers();
+  }
+  function sellerList() {
+    const q = norm(ss.q.trim());
+    const cmp = SORTS.find(x => x[0] === ss.sort)[2];
+    return R.sellers.filter(a => !q || norm(`${a.s.name} ${a.s.mat} ${a.s.branch.label} ${a.s.branch.regionName}`).includes(q)).sort(cmp);
+  }
+  function renderSellers() {
+    const ov = layer.querySelector('.d-sellers');
+    if (!ov || !ss) return;
+    const list = sellerList(), pages = Math.max(1, Math.ceil(list.length / PAGE));
+    ss.page = clamp(ss.page, 0, pages - 1);
+    const from = ss.page * PAGE, slice = list.slice(from, from + PAGE);
+    ov.querySelector('[data-ss="sub"]').textContent = `Quantidade: ${int(R.sellers.length)}`;
+    const box = ov.querySelector('[data-ss="list"]');
+    box.innerHTML = slice.length ? slice.map(a => `<article class="d-srow">
+      <div class="d-sid"><h4>${esc(a.s.name)}</h4><div class="d-chips"><span class="d-chip br">${esc(a.s.branch.label)}</span><span class="d-chip">Região ${esc(a.s.branch.regionName)}</span><span class="d-chip">Matrícula ${a.s.mat}</span><span class="d-chip">${tenureText(a.s.tenure)}</span></div>
+        <button type="button" class="d-more" data-act="seller" data-id="${a.s.id}">Clique para ver detalhes <span aria-hidden="true">→</span></button></div>
+      <div class="d-scol"><span class="d-sl">Produção</span><strong>${brl(a.prod)}</strong><small>${int(a.prod / 1500)}% de 150k</small>${vs(a.prod, a.prodAA)}</div>
+      <div class="d-scol"><span class="d-sl">Produção/dia</span><strong>${brl(a.perDay)}</strong>${vs(a.perDay, a.perDayAA)}<small>Dias ${a.worked}</small></div>
+      <div class="d-scol"><span class="d-sl">Pedidos</span><strong>${dec(a.ord)}</strong>${vs(a.ord, a.ordAA)}<small>Sem Linha Casa ${dec(a.ordSem)}</small></div>
+      <div class="d-scol"><span class="d-sl">Ticket médio</span><strong>${brl(a.ticket)}</strong>${vs(a.ticket, a.ticketAA)}<small>Sem Linha Casa ${brl(a.ticketSem)}</small></div>
+    </article>`).join('') : '<p class="d-empty">Nenhum vendedor encontrado com essa busca.</p>';
+    box.scrollTop = 0;
+    ov.querySelector('[data-ss="count"]').textContent = list.length ? `${int(list.length)} vendedores · exibindo ${from + 1}–${from + slice.length}` : '0 vendedores';
+    ov.querySelector('[data-ss="page"]').textContent = `Página ${ss.page + 1} de ${pages}`;
+    ov.querySelector('[data-act="prev"]').disabled = ss.page === 0;
+    ov.querySelector('[data-act="next"]').disabled = ss.page >= pages - 1;
+  }
+
+  function openSeller(id) {
+    const a = R.sellers.find(x => x.s.id === id);
+    if (!a) return;
+    const s = a.s, days = [];
+    for (let d = st.d1; d <= st.d2; d++) if (s.cur[d] || s.aa[d]) days.push({ d, c: s.cur[d] ? s.cur[d].p : 0, p: s.aa[d] ? s.aa[d].p : 0 });
+    const best = days.reduce((m, x) => x.c > m.c ? x : m, { d: 0, c: 0 });
+    const aa = (v, f) => v ? `AA ${f(v)}` : 'AA —';
+    const ov = pushOverlay(`<div class="d-modal d-seller" role="dialog" aria-modal="true" aria-labelledby="${p}-sd-t">
+      <header class="d-sd-head"><div class="d-sd-id"><h3 id="${p}-sd-t">${esc(s.name)}</h3><p>${label()}</p>
+        <div class="d-chips"><span class="d-chip br">${esc(s.branch.label)}</span><span class="d-chip">Região ${esc(s.branch.regionName)}</span><span class="d-chip">Matrícula ${s.mat}</span><span class="d-chip">${tenureText(s.tenure)}</span></div></div>
+        <button type="button" class="d-close" data-act="close" aria-label="Fechar"><svg><use href="#i-close"/></svg></button></header>
+      <div class="d-sd-body">
+        <div class="d-sd-two">
+          <div class="d-kbox"><span>Produção</span><strong>${brl(a.prod)}</strong><div class="d-ln">${vs(a.prod, a.prodAA)}${aa(a.prodAA, brl)}</div></div>
+          <div class="d-kbox"><span>Produção/dia</span><strong>${brl(a.perDay)}</strong><div class="d-ln">${vs(a.perDay, a.perDayAA)}${aa(a.perDayAA, brl)}</div><small>${a.worked} dias trabalhados</small></div>
+        </div>
+        <section class="d-grp"><h5>Pedidos</h5><div class="d-grp-grid">
+          <div><span>Com Linha Casa</span><strong>${dec(a.ord)}</strong><div class="d-ln">${vs(a.ord, a.ordAA)}${aa(a.ordAA, dec)}</div></div>
+          <div><span>Sem Linha Casa</span><strong>${dec(a.ordSem)}</strong><div class="d-ln">${vs(a.ordSem, a.ordSemAA)}${aa(a.ordSemAA, dec)}</div></div></div></section>
+        <section class="d-grp"><h5>Ticket médio</h5><div class="d-grp-grid">
+          <div><span>Com Linha Casa</span><strong>${brl(a.ticket)}</strong><div class="d-ln">${vs(a.ticket, a.ticketAA)}${aa(a.ticketAA, brl)}</div></div>
+          <div><span>Sem Linha Casa</span><strong>${brl(a.ticketSem)}</strong><div class="d-ln">${vs(a.ticketSem, a.ticketSemAA)}${aa(a.ticketSemAA, brl)}</div></div></div></section>
+        <section class="d-chartbox"><div class="d-chart-head"><h5>Produção dia a dia</h5><span>${a.worked} dias trabalhados · ${a.moved} dias com movimento${best.c ? ` · melhor dia: ${best.d} com ${brl(best.c)}` : ''}</span></div>
+          <div class="d-chart"></div>
+          <div class="d-legend"><span><i style="background:#2c53a1"></i>Produção do dia</span><span><i style="background:#cfd3dc"></i>Mesmo dia no ano anterior</span></div></section>
+      </div></div>`);
+    const box = ov.querySelector('.d-chart');
+    const draw = () => drawChart(box, days);
+    requestAnimationFrame(draw);
+    if (window.ResizeObserver) { let last = 0; new ResizeObserver(() => { if (box.isConnected && Math.abs(box.clientWidth - last) > 4) { last = box.clientWidth; draw(); } }).observe(box); }
+  }
+
+  function drawChart(box, days) {
+    const W = Math.max(240, Math.round(box.clientWidth - 16)), H = W < 460 ? 190 : 230;
+    const padL = 58, padR = 6, padT = 10, padB = 24, ih = H - padT - padB, iw = W - padL - padR;
+    if (!days.length) { box.innerHTML = '<p class="d-empty">Sem dias trabalhados no período.</p>'; return; }
+    const max = Math.max(1, ...days.map(x => Math.max(x.c, x.p)));
+    const step = niceStep(max / 3), top = step * Math.ceil(max / step);
+    const y = v => padT + ih * (1 - v / top);
+    const band = iw / days.length, bw = Math.max(2, Math.min(16, band * 0.34)), every = band < 15 ? 2 : 1;
+    let g = '';
+    for (let v = 0; v <= top + 0.5; v += step) {
+      g += `<line x1="${padL}" x2="${W - padR}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}" stroke="#e3e5ea" stroke-width="1"${v ? ' stroke-dasharray="3 4"' : ''}/>`;
+      g += `<text x="${padL - 8}" y="${(y(v) + 3.5).toFixed(1)}" text-anchor="end" fill="#7d838f" font-size="10">${tick(v)}</text>`;
+    }
+    days.forEach((x, i) => {
+      const cx = padL + band * (i + 0.5);
+      const hc = x.c ? Math.max(1.5, H - padB - y(x.c)) : 0, hp = x.p ? Math.max(1.5, H - padB - y(x.p)) : 0;
+      g += `<g><meta property="og:type" content="website">
+<meta property="og:title" content="Daniel Silva · Painel de KPIs de vendas">
+<meta property="og:description" content="Da base crua do banco de dados ao celular do gerente. Case com demonstração interativa e dados fictícios.">
+<meta property="og:url" content="https://dani185silvaa-hue.github.io/">
+<meta property="og:image" content="https://dani185silvaa-hue.github.io/assets/capa.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23133476'/%3E%3Ctext x='16' y='21' font-family='Arial' font-weight='700' font-size='13' fill='%23ffc566' text-anchor='middle'%3EDS%3C/text%3E%3C/svg%3E">
+<title>Dia ${x.d}: ${brl(x.c)} · mesmo dia do ano anterior: ${brl(x.p)}</title>`;
+      g += `<rect x="${(cx - bw - 1).toFixed(1)}" y="${(H - padB - hc).toFixed(1)}" width="${bw.toFixed(1)}" height="${hc.toFixed(1)}" rx="2" fill="#2c53a1"/>`;
+      g += `<rect x="${(cx + 1).toFixed(1)}" y="${(H - padB - hp).toFixed(1)}" width="${bw.toFixed(1)}" height="${hp.toFixed(1)}" rx="2" fill="#cfd3dc"/></g>`;
+      if (i % every === 0) g += `<text x="${cx.toFixed(1)}" y="${H - 7}" text-anchor="middle" fill="#7d838f" font-size="10">${x.d}</text>`;
+    });
+    box.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Produção por dia comparada ao mesmo dia do ano anterior">${g}</svg>`;
+  }
+
+  /* Eventos */
+  host.addEventListener('click', e => {
+    const t = e.target.closest('[data-act]');
+    if (!t || !host.contains(t)) { if (!e.target.closest('.d-field[data-dd]')) closeMenus(); return; }
+    const act = t.dataset.act;
+    if (act !== 'dd' && act !== 'opt') closeMenus();
+    if (act === 'period') openPeriod();
+    else if (act === 'dd') { const f = t.closest('.d-field'), menu = f.querySelector('.d-menu'), open = menu.hidden; closeMenus(f); if (open) fillMenu(f); menu.hidden = !open; t.setAttribute('aria-expanded', String(open)); }
+    else if (act === 'opt') {
+      const f = t.closest('.d-field'), isR = f.dataset.dd === 'regions', set = isR ? st.regions : st.branches, id = t.dataset.id;
+      if (!id) set.clear(); else if (set.has(id)) set.delete(id); else set.add(id);
+      if (isR && st.regions.size) for (const b of [...st.branches]) if (!st.regions.has(BRANCHES.find(x => x.id === b).region)) st.branches.delete(b);
+      fillMenu(f); render();
+    }
+    else if (act === 'reset') { st.d1 = 1; st.d2 = LAST; st.regions.clear(); st.branches.clear(); render(); }
+    else if (act === 'sellers') openSellers(t.dataset.sort);
+    else if (act === 'close') closeTop();
+    else if (act === 'quick') {
+      const ov = t.closest('.d-overlay'), to = ov.querySelector(`#${p}-to`), fr = ov.querySelector(`#${p}-from`);
+      const end = fromIso(to.value) || LAST, q = t.dataset.q;
+      fr.value = iso(q === 'acc' ? 1 : q === 'week' ? weekStart(end) : end);
+      preview(ov);
+    }
+    else if (act === 'apply') { const [a, b] = readRange(t.closest('.d-overlay')); st.d1 = a; st.d2 = b; closeTop(); render(); }
+    else if (act === 'prev' || act === 'next') { ss.page += act === 'next' ? 1 : -1; renderSellers(); }
+    else if (act === 'seller') openSeller(t.dataset.id);
+  });
+  host.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    if (layer.childElementCount) { closeTop(); e.stopPropagation(); }
+    else closeMenus();
+  });
+  document.addEventListener('click', e => { if (!host.contains(e.target)) closeMenus(); });
+
+  render();
+  return { host, open: (what, arg) => what === 'sellers' ? openSellers(arg) : what === 'seller' ? openSeller(arg || R.sellers.slice().sort((x, y) => y.prod - x.prod)[0].s.id) : what === 'period' ? openPeriod() : null, menu: kind => host.querySelector(`.d-field[data-dd="${kind}"] .d-select`).click() };
+}
+
+function syncLock() { document.documentElement.classList.toggle('d-lock', !!document.querySelector('.flowable .d-overlay')); }
+
+/* ---------- Montagem ---------- */
+const SHOT = /[?&]shot=1/.test(location.search);
+const mq = window.matchMedia('(max-width: 700px)');
+const setFlow = () => document.documentElement.classList.toggle('flow', SHOT || mq.matches);
+setFlow();
+if (mq.addEventListener) mq.addEventListener('change', setFlow);
+
+if (SHOT) {
+  document.body.classList.add('shot');
+  const h = document.createElement('div');
+  h.className = 'dash-host flowable';
+  document.body.appendChild(h);
+  window.__dash = createDashboard(h, 'shot');
+} else {
+  createDashboard(document.getElementById('host-phone'), 'ph');
+  createDashboard(document.getElementById('host-demo'), 'dk');
+}
+
+const copyBtn = document.getElementById('copy-handle');
+if (copyBtn) copyBtn.addEventListener('click', () => {
+  const text = 'https://www.linkedin.com/in/danielsilva185/';
+  const done = () => { copyBtn.textContent = 'Copiado'; setTimeout(() => { copyBtn.textContent = 'Copiar'; }, 1800); };
+  const fallback = () => { const r = document.createRange(); r.selectNodeContents(document.getElementById('handle-text')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); copyBtn.textContent = 'Selecionado'; };
+  try { navigator.clipboard.writeText(text).then(done, fallback); } catch (err) { fallback(); }
+});
+})();
+</script>
+
+</body>
+</html>
