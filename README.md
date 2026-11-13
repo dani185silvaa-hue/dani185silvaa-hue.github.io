@@ -12,7 +12,7 @@ Os gerentes distritais tinham dificuldade para enxergar os números das suas mac
 
 Construí o painel de ponta a ponta. Ele reúne produção, faturamento, metas, ritmo de pedidos, equipe de vendas, mix de categorias, formas de pagamento e clientes em uma única tela. Os filtros de data, região e filial recalculam tudo na hora, até o nível do vendedor.
 
-O painel é um único arquivo HTML, enviado todo dia pelo WhatsApp aos gerentes distritais. Eles abrem no celular sem login e sem instalar nada.
+O painel é um único arquivo HTML, enviado todo dia pelo WhatsApp a 30 gestores, entre distritais e regionais. Eles abrem no celular sem login e sem instalar nada.
 
 | Desktop | Celular |
 |---|---|
